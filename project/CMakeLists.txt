@@ -14,6 +14,7 @@ IF (USE_assimp)
 add_executable(SRE-assimp assimp.cpp)
 ENDIF(USE_assimp)
 
+
 # Link projects with project libraries
 target_link_libraries(SRE-node-editor ${all_libs})
 target_link_libraries(SRE-box2d-example ${all_libs})
@@ -28,7 +29,7 @@ IF (USE_assimp)
 	target_link_libraries(SRE-assimp ${all_libs})
 ENDIF(USE_assimp)
 if (UNIX)
-target_link_libraries(SRE-lua-example ${all_libs}  -ldl)
+target_link_libraries(SRE-lua-example ${all_libs} -ldl)
 target_link_libraries(SRE-lua-example-lines ${all_libs}  -ldl)
 else (UNIX)
 target_link_libraries(SRE-lua-example ${all_libs})

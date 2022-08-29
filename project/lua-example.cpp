@@ -10,7 +10,7 @@
 #include "glm/ext.hpp"
 
 // lua headers
-#include "sol.hpp"
+#include <sol/sol.hpp>
 
 using namespace sre;
 using namespace std;

@@ -3,7 +3,7 @@ project(SimpleRenderEngineProject CXX)
 
 set( CMAKE_VERBOSE_MAKEFILE on )
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -163,7 +163,17 @@ ENDIF(USE_OPENVR)
 
 # all_libs contains a list of all libraries that should be linked
 # for bullet support add ${BULLET_LIBRARIES}
-set(all_libs ${EXTRA_LIBS} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARY} ${LUA_LIBRARIES} SRE debug ${Box2D_LIBRARY_DEBUG} optimized ${Box2D_LIBRARY_REL} ${OPENVR_LIB})
+
+include(FetchContent) 
+FetchContent_Declare(
+    sol2
+    GIT_REPOSITORY https://github.com/ThePhD/sol2
+    GIT_TAG        v3.3.0
+)
+FetchContent_MakeAvailable(sol2)
+
+
+set(all_libs ${EXTRA_LIBS} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARY} ${LUA_LIBRARIES} SRE debug ${Box2D_LIBRARY_DEBUG} optimized ${Box2D_LIBRARY_REL} ${OPENVR_LIB} sol2)
 IF (USE_BULLET)
 	set(all_libs optimized  ${all_libs} optimized  ${BULLET_DYNAMICS_LIBRARY} optimized  ${BULLET_COLLISION_LIBRARY} optimized  ${BULLET_MATH_LIBRARY} debug ${BULLET_DYNAMICS_LIBRARY_DEBUG} debug ${BULLET_COLLISION_LIBRARY_DEBUG} debug ${BULLET_MATH_LIBRARY_DEBUG} )
 ENDIF(USE_BULLET)
