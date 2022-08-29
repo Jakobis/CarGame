@@ -36,8 +36,5 @@ Use x86 (64-bit is currently unsupported).
 
 # Setup Linux
 
-* sudo apt-get install libsdl2-dev
-* sudo apt-get install libsdl2-image-dev
-* sudo apt-get install libsdl2-mixer-dev
-* sudo apt-get install libglew-dev
-* sudo apt-get install lua5.3-dev
+- Ubuntu: `sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libglew-dev lua5.3-dev`
+- Arch: `yay -S lua53 glew sdl2 sdl2_image sdl2_mixer`
