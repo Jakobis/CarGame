@@ -1,5 +1,6 @@
 ## Custom ignore
 bin/
+cmake-build-debug/
 
 #################
 ## Visual Studio
