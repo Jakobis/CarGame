@@ -11,4 +11,12 @@ public:
     void onCollisionStart(PhysicsComponent *comp) override;
 
     void onCollisionEnd(PhysicsComponent *comp) override;
+
+    void update(float deltaTime) override;
+    
+private:
+    bool forward = false;
+    bool backwards = false;
+    bool right = false;
+    bool left = false;
 };

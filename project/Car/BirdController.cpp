@@ -16,10 +16,25 @@ BirdController::BirdController(GameObject *gameObject) : Component(gameObject) {
 }
 
 bool BirdController::onKey(SDL_Event &event) {
+    bool keyDown = event.type == SDL_KEYDOWN;
+    switch (event.key.keysym.sym) {
+        case SDLK_w:
+            forward = keyDown;
+            break;
+        case SDLK_s:
+            backwards = keyDown;
+            break;
+        case SDLK_a:
+            left = keyDown;
+            break;
+        case SDLK_d:
+            right = keyDown;
+            break;
+    }
     if (event.type == SDL_KEYDOWN){
-        std::cout << "some key pressed" << std::endl;
+
     } else if (event.type == SDL_KEYUP){
-        std::cout << "some key released" << std::endl;
+        
     }
     return false;
 }
@@ -30,6 +45,14 @@ void BirdController::onCollisionStart(PhysicsComponent *comp) {
 
 void BirdController::onCollisionEnd(PhysicsComponent *comp) {
 
+}
+
+void BirdController::update(float deltaTime) {
+    auto phys = gameObject->getComponent<PhysicsComponent>();
+    if (forward) {
+        std::cout << "Move Up\n";
+        phys->addImpulse(glm::vec2(0.0f, 1.0f) * deltaTime);
+    }
 }
 
 

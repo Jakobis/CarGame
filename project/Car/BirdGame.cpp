@@ -12,7 +12,7 @@
 using namespace std;
 using namespace sre;
 
-const glm::vec2 BirdGame::windowSize(400,600);
+const glm::vec2 BirdGame::windowSize(800,600);
 
 BirdGame* BirdGame::instance = nullptr;
 
@@ -76,39 +76,6 @@ void BirdGame::init() {
         s.setScale({2,2});
     }
     anim-> setSprites(spriteAnim);
-
-    auto spriteBottom = spriteAtlas->get("column_bottom.png");
-    spriteBottom.setScale({2,2});
-    float curve = 250;
-    int length = 50;
-    float heighVariation = 80;
-    float xVariation = 50;
-
-    for (int i=0;i<length;i++) {
-        auto obj = createGameObject();
-        obj->name = "Wall bottom";
-        auto so = obj->addComponent<SpriteComponent>();
-
-        float xOffset = xVariation * cos(i*curve*0.2f);
-        glm::vec2 pos{i*300+xOffset,spriteBottom.getSpriteSize().y/2 + sin(i*curve)*heighVariation};
-        obj->setPosition(pos);
-        so->setSprite(spriteBottom);
-
-        glm::vec2 s { spriteBottom.getSpriteSize().x * spriteBottom.getScale().x/2, spriteBottom.getSpriteSize().y * spriteBottom.getScale().y/2};
-    }
-    auto spriteTop = spriteAtlas->get("column_top.png");
-    spriteTop.setScale({2,2});
-    for (int i=0;i<length;i++){
-        auto obj = createGameObject();
-        obj->name = "Wall top";
-        auto so = obj->addComponent<SpriteComponent>();
-
-        float xOffset = xVariation * cos(i*curve*0.2f);
-        glm::vec2 pos{ i*300+xOffset, windowSize.y-spriteTop.getSpriteSize().y/2 + sin(i*curve)*heighVariation};
-        obj->setPosition(pos);
-        glm::vec2 s { spriteTop.getSpriteSize().x * spriteTop.getScale().x/2, spriteTop.getSpriteSize().y * spriteTop.getScale().y/2};
-        so->setSprite(spriteTop);
-    }
 
     background1Component.init("background.png");
     background2Component.init("background2.png");
@@ -218,7 +185,7 @@ void BirdGame::updatePhysics() {
 }
 
 void BirdGame::initPhysics() {
-    float gravity = -9.8; // 9.8 m/s2
+    float gravity = 0; // 9.8 m/s2
     delete world;
     world = new b2World(b2Vec2(0,gravity));
     world->SetContactListener(this);
