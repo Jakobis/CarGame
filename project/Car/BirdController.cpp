@@ -49,10 +49,6 @@ void BirdController::onCollisionEnd(PhysicsComponent *comp) {
 
 void BirdController::update(float deltaTime) {
     auto phys = gameObject->getComponent<PhysicsComponent>();
-    if (forward) {
-        std::cout << "Move Up\n";
-        phys->addImpulse(glm::vec2(0.0f, 1.0f) * deltaTime);
-    }
 }
 
 
