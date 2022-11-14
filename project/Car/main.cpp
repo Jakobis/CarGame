@@ -1,6 +1,7 @@
-#include "BirdGame.hpp"
+#include "CarGame.hpp"
 
-int main(){
-   new BirdGame();
+int main()
+{
+   new CarGame();
    return 0;
 }

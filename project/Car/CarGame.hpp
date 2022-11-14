@@ -9,15 +9,17 @@
 
 class PhysicsComponent;
 
-enum class GameState{
+enum class GameState
+{
     Ready,
     Running,
     GameOver
 };
 
-class BirdGame : public b2ContactListener {
+class CarGame : public b2ContactListener
+{
 public:
-    BirdGame();
+    CarGame();
 
     std::shared_ptr<GameObject> createGameObject();
     static const glm::vec2 windowSize;
@@ -26,9 +28,10 @@ public:
 
     void EndContact(b2Contact *contact) override;
 
-    static BirdGame* instance;
+    static CarGame *instance;
 
     void setGameState(GameState newState);
+
 private:
     sre::SDLRenderer r;
 
@@ -47,20 +50,16 @@ private:
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
-    BackgroundComponent background1Component;
-    BackgroundComponent background2Component;
+    BackgroundComponent backgroundComponent;
 
     void updatePhysics();
-    b2World * world = nullptr;
+    b2World *world = nullptr;
     const float physicsScale = 100;
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
-    std::map<b2Fixture*,PhysicsComponent *> physicsComponentLookup;
+    std::map<b2Fixture *, PhysicsComponent *> physicsComponentLookup;
     Box2DDebugDraw debugDraw;
     bool doDebugDraw = false;
     GameState gameState = GameState::Ready;
     friend class PhysicsComponent;
 };
-
-
-

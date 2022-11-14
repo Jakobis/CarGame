@@ -8,7 +8,7 @@
 class BackgroundComponent {
 public:
     BackgroundComponent();
-    void init(std::string filename);
+    void init(sre::Sprite sprite);
     void renderBackground(sre::RenderPass& renderPass, float offset);
 private:
     std::shared_ptr<sre::Texture> tex;

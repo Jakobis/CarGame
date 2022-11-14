@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "asphalt.png",
+	"frame": {"x":0,"y":0,"w":170,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},
+	"sourceSize": {"w":170,"h":170}
+},
+{
+	"filename": "Truck.png",
+	"frame": {"x":170,"y":0,"w":32,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":75},
+	"sourceSize": {"w":32,"h":75}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "car.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":256},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6942e94925b87c7d8b4cdbfddc748de3:601aae5194667968902c65e05d3b0581:0cc8a77b70c78c003d18a01f226c6fa5$"
+}
+}
