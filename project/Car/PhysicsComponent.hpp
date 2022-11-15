@@ -20,6 +20,8 @@ public:
 
     void setLinearVelocity(glm::vec2 velocity);
 
+    void addAngularImpulse(float radianImpulse);
+
     glm::vec2 getLinearVelocity();
 
     bool isSensor();

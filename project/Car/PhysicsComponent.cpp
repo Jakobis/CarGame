@@ -41,6 +41,11 @@ void PhysicsComponent::addForce(glm::vec2 force)
     body->ApplyForce(forceV, body->GetWorldCenter(), true);
 }
 
+void PhysicsComponent::addAngularImpulse(float radianImpulse)
+{
+    body->ApplyAngularImpulse(radianImpulse, true);
+}
+
 glm::vec2 PhysicsComponent::getLinearVelocity()
 {
     b2Vec2 v = body->GetLinearVelocity();

@@ -155,7 +155,7 @@ void CarGame::onKey(SDL_Event &event)
     {
         switch (event.key.keysym.sym)
         {
-        case SDLK_d:
+        case SDLK_ESCAPE:
             // press 'd' for physics debug
             doDebugDraw = !doDebugDraw;
             if (doDebugDraw)

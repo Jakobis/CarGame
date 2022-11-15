@@ -52,7 +52,17 @@ void CarController::onCollisionEnd(PhysicsComponent *comp)
 {
 }
 
+#define SPEED 20
+
 void CarController::update(float deltaTime)
 {
     auto phys = gameObject->getComponent<PhysicsComponent>();
+    if (forward)
+        phys->addForce({0, SPEED * deltaTime});
+    if (backwards)
+        phys->addForce({0, -SPEED * deltaTime});
+    if (left)
+        phys->addAngularImpulse(-SPEED * deltaTime);
+    if (right)
+        phys->addAngularImpulse(SPEED * deltaTime);
 }

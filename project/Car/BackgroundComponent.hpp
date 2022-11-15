@@ -5,12 +5,13 @@
 #include "sre/Texture.hpp"
 #include "sre/RenderPass.hpp"
 
-class BackgroundComponent {
+class BackgroundComponent
+{
 public:
     BackgroundComponent();
     void init(sre::Sprite sprite);
-    void renderBackground(sre::RenderPass& renderPass, float offset);
+    void renderBackground(sre::RenderPass &renderPass, float offset);
+
 private:
-    std::shared_ptr<sre::Texture> tex;
     std::shared_ptr<sre::SpriteBatch> batch;
 };
