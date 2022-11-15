@@ -3,7 +3,6 @@
 //
 
 #include <sre/SpriteAtlas.hpp>
-#include <sre/Texture.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
@@ -24,12 +23,12 @@ void BackgroundComponent::renderBackground(sre::RenderPass &renderPass, float of
 
 void BackgroundComponent::init(sre::Sprite sprite)
 {
-    float scale = CarGame::windowSize.y / tex->getHeight();
+    float scale = CarGame::windowSize.y / sprite.getSpriteSize().y;
     sprite.setScale({scale, scale});
     auto batchBuilder = SpriteBatch::create();
     for (int i = 0; i < 100; i++)
     {
-        sprite.setPosition(vec2(tex->getWidth() * (i - 1) * scale, 0));
+        sprite.setPosition(vec2(sprite.getSpriteSize().x * (i - 1) * scale, 0));
         batchBuilder.addSprite(sprite);
     }
     batch = batchBuilder.build();

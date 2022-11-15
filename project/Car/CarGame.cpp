@@ -71,7 +71,7 @@ void CarGame::init()
 
     carObj->setPosition({-100, 300});
     so->setSprite(sprite);
-    auto anim = carObj->addComponent<SpriteAnimationComponent>();
+    // auto anim = carObj->addComponent<SpriteAnimationComponent>();
     auto phys = carObj->addComponent<PhysicsComponent>();
     phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
     auto birdC = carObj->addComponent<CarController>();
@@ -83,7 +83,7 @@ void CarGame::init()
     // }
     // anim->setSprites(spriteAnim);
 
-    backgroundComponent.init(spriteAtlas->get("Truck.png"));
+    backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 }
 
 void CarGame::update(float time)
