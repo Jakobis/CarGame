@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
+#include "PhysicsComponent.hpp"
 
 enum Control
 {

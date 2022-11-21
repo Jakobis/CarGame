@@ -62,14 +62,14 @@ Car::Car(GameObject *gameObject, GameObject tireObjects[4])
     jointDef.localAnchorB.SetZero(); // center of tire
 
     // back left tire
-    auto tire = std::make_shared<Tire>(tireObjects[0]);
+    auto tire = std::make_shared<Tire>(&tireObjects[0]);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, maxTorque);
     jointDef.localAnchorA.Set(-3, 0.75);
     phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
 
     // back right tire
-    auto tire = std::make_shared<Tire>(tireObjects[1]);
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, maxTorque);
+    auto tire2 = std::make_shared<Tire>(&tireObjects[1]);
+    tire2->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, maxTorque);
     jointDef.localAnchorA.Set(3, 0.75);
-    phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    phys->initJoint(tire2->gameObject->getComponent<PhysicsComponent>(), &jointDef);
 }
