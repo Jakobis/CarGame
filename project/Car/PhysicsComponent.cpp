@@ -22,6 +22,11 @@ PhysicsComponent::~PhysicsComponent()
         body->DestroyFixture(fixture);
         fixture = nullptr;
     }
+    if (world != nullptr && joint != nullptr)
+    {
+        world->DestroyJoint(joint);
+        joint = nullptr;
+    }
     if (world != nullptr && body != nullptr)
     {
         world->DestroyBody(body);
@@ -35,15 +40,25 @@ void PhysicsComponent::addImpulse(glm::vec2 impulse)
     body->ApplyLinearImpulse(iForceV, body->GetWorldCenter(), true);
 }
 
+void PhysicsComponent::addAngularImpulse(float impulse)
+{
+    body->ApplyAngularImpulse(impulse, true);
+}
+
+float PhysicsComponent::getAngularVelocity()
+{
+    return body->GetAngularVelocity();
+}
+
 void PhysicsComponent::addForce(glm::vec2 force)
 {
     b2Vec2 forceV{force.x, force.y};
     body->ApplyForce(forceV, body->GetWorldCenter(), true);
 }
 
-void PhysicsComponent::addAngularImpulse(float radianImpulse)
+void PhysicsComponent::addTorque(float torque)
 {
-    body->ApplyAngularImpulse(radianImpulse, true);
+    body->ApplyTorque(torque, true);
 }
 
 glm::vec2 PhysicsComponent::getLinearVelocity()
@@ -60,6 +75,16 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
         body->SetAwake(true);
     }
     body->SetLinearVelocity(v);
+}
+
+float PhysicsComponent::getIntertia()
+{
+    return body->GetInertia();
+}
+
+void PhysicsComponent::setAngularDamping(float angularDamping)
+{
+    body->SetAngularDamping(angularDamping);
 }
 
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
@@ -100,6 +125,14 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     fixture = body->CreateFixture(&fxD);
 
     CarGame::instance->registerPhysicsComponent(this);
+}
+
+void PhysicsComponent::initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef)
+{
+    assert(other->joint == nullptr);
+    jointDef->bodyA = this->body;
+    jointDef->bodyB = other->body;
+    other->joint = world->CreateJoint(jointDef);
 }
 
 bool PhysicsComponent::isSensor()

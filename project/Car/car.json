@@ -9,8 +9,16 @@
 	"sourceSize": {"w":170,"h":170}
 },
 {
+	"filename": "Tire.png",
+	"frame": {"x":170,"y":0,"w":6,"h":12},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":6,"h":12},
+	"sourceSize": {"w":6,"h":12}
+},
+{
 	"filename": "Truck.png",
-	"frame": {"x":170,"y":0,"w":32,"h":75},
+	"frame": {"x":176,"y":0,"w":32,"h":75},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":75},
@@ -23,6 +31,6 @@
 	"format": "RGBA8888",
 	"size": {"w":256,"h":256},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6942e94925b87c7d8b4cdbfddc748de3:601aae5194667968902c65e05d3b0581:0cc8a77b70c78c003d18a01f226c6fa5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:105673ac50fe373ecdc4be3e29aa4394:b02173c2056e5cd7a4e135ce69278813:0cc8a77b70c78c003d18a01f226c6fa5$"
 }
 }

@@ -4,6 +4,7 @@
 
 #include <SDL_events.h>
 #include <iostream>
+#include "glm/gtc/matrix_transform.hpp"
 #include "CarController.hpp"
 #include "GameObject.hpp"
 #include "SpriteComponent.hpp"
@@ -52,17 +53,25 @@ void CarController::onCollisionEnd(PhysicsComponent *comp)
 {
 }
 
-#define SPEED 20
+#define SPEED 10
 
 void CarController::update(float deltaTime)
 {
     auto phys = gameObject->getComponent<PhysicsComponent>();
-    if (forward)
-        phys->addForce({0, SPEED * deltaTime});
-    if (backwards)
-        phys->addForce({0, -SPEED * deltaTime});
+    auto oldVel = phys->getLinearVelocity();
+    auto newVel = glm::vec2(oldVel);
+    if (newVel == glm::vec2({0, 0}))
+        newVel = glm::vec2({0, 1});
+    // if (forward)
+    //     newVel += SPEED * 1.05 * deltaTime;
+    // if (backwards)
+    //     newVel -= SPEED * 1.05 * deltaTime;
     if (left)
-        phys->addAngularImpulse(-SPEED * deltaTime);
+        newVel = glm::rotate(glm::mat4(1), SPEED * deltaTime, {0, 0, 1}) * glm::vec4(newVel, 0, 1);
     if (right)
-        phys->addAngularImpulse(SPEED * deltaTime);
+        newVel = glm::rotate(glm::mat4(1), -SPEED * deltaTime, {0, 0, 1}) * glm::vec4(newVel, 0, 1);
+    // phys->addTorque(-SPEED * deltaTime);
+    std::cout << glm::sin(newVel.x) << "\n";
+    phys->setLinearVelocity(newVel);
+    gameObject->setRotation(newVel.g);
 }

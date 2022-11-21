@@ -74,7 +74,9 @@ void CarGame::init()
     // auto anim = carObj->addComponent<SpriteAnimationComponent>();
     auto phys = carObj->addComponent<PhysicsComponent>();
     phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
-    auto birdC = carObj->addComponent<CarController>();
+    phys->body->SetAngularDamping(3);
+
+    auto carC = carObj->addComponent<CarController>();
 
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)
