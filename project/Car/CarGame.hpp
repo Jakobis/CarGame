@@ -60,6 +60,6 @@ private:
     std::map<b2Fixture *, PhysicsComponent *> physicsComponentLookup;
     Box2DDebugDraw debugDraw;
     bool doDebugDraw = false;
-    GameState gameState = GameState::Ready;
+    GameState gameState = GameState::Running;
     friend class PhysicsComponent;
 };

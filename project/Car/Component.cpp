@@ -5,30 +5,33 @@
 #include "Component.hpp"
 
 Component::Component(GameObject *gameObject)
-:gameObject(gameObject)
+    : gameObject(gameObject)
 {
 }
 
-void Component::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {
-
+void Component::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder)
+{
 }
 
-void Component::update(float deltaTime) {
-
+void Component::update(float deltaTime)
+{
 }
 
-GameObject *Component::getGameObject() {
+GameObject *Component::getGameObject()
+{
     return gameObject;
 }
 
-bool Component::onKey(SDL_Event &event) {
+/** Returns true if event should be consumed, false otherwise */
+bool Component::onKey(SDL_Event &event)
+{
     return false;
 }
 
-void Component::onCollisionStart(PhysicsComponent* comp) {
-
+void Component::onCollisionStart(PhysicsComponent *comp)
+{
 }
 
-void Component::onCollisionEnd(PhysicsComponent* comp) {
-
+void Component::onCollisionEnd(PhysicsComponent *comp)
+{
 }

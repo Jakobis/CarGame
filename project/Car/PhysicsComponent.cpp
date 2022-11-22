@@ -77,6 +77,21 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
     body->SetLinearVelocity(v);
 }
 
+glm::vec2 PhysicsComponent::getLateralImpulse()
+{
+    auto b2_currentRightNormal = body->GetWorldVector({1, 0});
+    glm::vec2 currentRightNormal(b2_currentRightNormal.x, b2_currentRightNormal.y);
+    auto lateralVelocity = glm::dot(currentRightNormal, getLinearVelocity()) * currentRightNormal;
+    return body->GetMass() * -lateralVelocity;
+}
+
+glm::vec2 PhysicsComponent::getForwardVelocity()
+{
+    auto b2_currentForwardNormal = body->GetWorldVector({0, 1});
+    glm::vec2 currentForwardNormal(b2_currentForwardNormal.x, b2_currentForwardNormal.y);
+    return glm::dot(currentForwardNormal, getLinearVelocity()) * currentForwardNormal;
+}
+
 float PhysicsComponent::getIntertia()
 {
     return body->GetInertia();

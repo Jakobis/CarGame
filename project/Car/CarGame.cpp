@@ -8,11 +8,12 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
 #include "CarController.hpp"
+#include "Car.hpp"
 
 using namespace std;
 using namespace sre;
 
-const glm::vec2 CarGame::windowSize(800, 600);
+const glm::vec2 CarGame::windowSize(1200, 800);
 
 CarGame *CarGame::instance = nullptr;
 
@@ -68,15 +69,16 @@ void CarGame::init()
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
     sprite.setScale({2, 2});
-
-    carObj->setPosition({-100, 300});
+    carObj->setPosition({-100, 200});
     so->setSprite(sprite);
-    // auto anim = carObj->addComponent<SpriteAnimationComponent>();
-    auto phys = carObj->addComponent<PhysicsComponent>();
-    phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
-    phys->body->SetAngularDamping(3);
 
-    auto carC = carObj->addComponent<CarController>();
+    // auto anim = carObj->addComponent<SpriteAnimationComponent>();
+    // auto phys = carObj->addComponent<PhysicsComponent>();
+    // phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
+    // phys->body->SetAngularDamping(3);
+
+    carObj->addComponent<Car>();
+    // auto carC = carObj->addComponent<CarController>();
 
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)

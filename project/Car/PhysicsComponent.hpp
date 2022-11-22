@@ -34,6 +34,10 @@ public:
 
     glm::vec2 getLinearVelocity();
 
+    glm::vec2 getForwardVelocity();
+
+    glm::vec2 getLateralImpulse();
+
     bool isSensor();
 
     void setSensor(bool enabled);
