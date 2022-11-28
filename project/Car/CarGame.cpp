@@ -93,7 +93,6 @@ void CarGame::init()
     auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
     auto enemySprite = spriteAtlas->get("Truck.png");
     enemySprite.setScale({2,2});
-    enemyObj->setPosition({200, 200});
     enemySpriteComponent->setSprite(enemySprite);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
     enemyComp->init(carObj);

@@ -14,8 +14,9 @@
 EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
 {
     this->gameObject = gameObject;
+    gameObject->setPosition({2000, 200});
     auto phys = gameObject->addComponent<PhysicsComponent>();
-    glm::vec2 size(200 / 10, 500 / 10);
+    glm::vec2 size(20 / 10, 50 / 10);
     phys->initBox(b2_dynamicBody, size, {10 / 10, 25 / 10}, 10);
 }
 
@@ -35,8 +36,9 @@ void EnemyComponent::update(float deltaTime)
     //std::cout << nullptr<< "\n";
     auto desiredPosition = player->getPosition();
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
+    //phys->addForce({1000, 0});
     //gameObject->setPosition(gameObject->getPosition() + glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-    //std::cout << "Enemy: " << gameObject->getPosition().x << " " << gameObject->getPosition().y << "\n";
+    std::cout << "Enemy: " << gameObject->getPosition().x << " " << gameObject->getPosition().y << "\n";
 }
 
 void EnemyComponent::init(std::shared_ptr<GameObject> player) 

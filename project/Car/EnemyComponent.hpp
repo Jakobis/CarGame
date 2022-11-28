@@ -17,5 +17,5 @@ public:
 
 private:
     std::shared_ptr<GameObject> player;
-    float speed = 100;
+    float speed = 1000000;
 };
