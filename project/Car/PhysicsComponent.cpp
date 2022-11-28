@@ -50,6 +50,11 @@ float PhysicsComponent::getAngularVelocity()
     return body->GetAngularVelocity();
 }
 
+float PhysicsComponent::getAngle()
+{
+    return body->GetAngle();
+}
+
 void PhysicsComponent::addForce(glm::vec2 force)
 {
     b2Vec2 forceV{force.x, force.y};
@@ -142,12 +147,13 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     CarGame::instance->registerPhysicsComponent(this);
 }
 
-void PhysicsComponent::initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef)
+b2Joint *PhysicsComponent::initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef)
 {
     assert(other->joint == nullptr);
     jointDef->bodyA = this->body;
     jointDef->bodyB = other->body;
     other->joint = world->CreateJoint(jointDef);
+    return other->joint;
 }
 
 bool PhysicsComponent::isSensor()

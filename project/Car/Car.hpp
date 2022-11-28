@@ -16,7 +16,7 @@ class Tire
 {
 public:
     explicit Tire(std::shared_ptr<GameObject> gameObject);
-    void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse, float maxTorque);
+    void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse);
     void updateFriction();
     void updateDrive(char control);
     void updateTurn(char control);
@@ -29,7 +29,6 @@ private:
     float maxDriveForce;
     float maxLateralImpulse;
     float currentTraction;
-    float maxTorque;
     friend class Car;
 };
 
@@ -44,7 +43,7 @@ private:
     GameObject *gameObject;
     std::shared_ptr<PhysicsComponent> phys;
     std::vector<std::shared_ptr<Tire>> tires;
-    std::shared_ptr<b2RevoluteJoint> flJoint;
-    std::shared_ptr<b2RevoluteJoint> frJoint;
+    b2RevoluteJoint *flJoint;
+    b2RevoluteJoint *frJoint;
     char control = 0;
 };

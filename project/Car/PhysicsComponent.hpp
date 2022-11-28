@@ -14,7 +14,7 @@ public:
     virtual ~PhysicsComponent();
     void initCircle(b2BodyType type, float radius, glm::vec2 center, float density);
     void initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density);
-    void initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef);
+    b2Joint *initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef);
 
     void addForce(glm::vec2 force); // Force gradually affects the velocity over time
 
@@ -23,6 +23,8 @@ public:
     void addAngularImpulse(float impulse);
 
     float getAngularVelocity();
+
+    float getAngle();
 
     float getIntertia();
 
@@ -42,10 +44,11 @@ public:
 
     void setSensor(bool enabled);
 
+    b2Body *body = nullptr;
+
 private:
     b2PolygonShape *polygon = nullptr;
     b2CircleShape *circle = nullptr;
-    b2Body *body = nullptr;
     b2Shape::Type shapeType;
     b2Fixture *fixture = nullptr;
     b2Joint *joint = nullptr;
