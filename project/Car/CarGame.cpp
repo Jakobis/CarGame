@@ -72,10 +72,19 @@ void CarGame::init()
     carObj->setPosition({-100, 200});
     so->setSprite(sprite);
 
-    // auto anim = carObj->addComponent<SpriteAnimationComponent>();
-    // auto phys = carObj->addComponent<PhysicsComponent>();
-    // phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
-    // phys->body->SetAngularDamping(3);
+    auto carComp = carObj->addComponent<Car>();
+    sprite = spriteAtlas->get("Tire.png");
+    sprite.setScale({2, 2});
+    carComp->initTires(&sprite);
+
+    // Absolute hack -- Sort the car and tires by name, s.t. car is drawn over tires
+    std::sort(
+        sceneObjects.begin(),
+        sceneObjects.end(),
+        [](std::shared_ptr<GameObject> a, std::shared_ptr<GameObject> b)
+        {
+            return a->name > b->name;
+        });
 
     carObj->addComponent<Car>();
 
@@ -92,11 +101,11 @@ void CarGame::init()
     enemyObj->name = "Enemy";
     auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
     auto enemySprite = spriteAtlas->get("Truck.png");
-    enemySprite.setScale({2,2});
+    enemySprite.setScale({2, 2});
+    enemyObj->setPosition({200, 200});
     enemySpriteComponent->setSprite(enemySprite);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
     enemyComp->init(carObj);
-
 }
 
 void CarGame::update(float time)

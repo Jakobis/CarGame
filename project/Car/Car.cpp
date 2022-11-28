@@ -4,10 +4,11 @@
 #include "SpriteComponent.hpp"
 #include <iostream>
 
-Tire::Tire(std::shared_ptr<GameObject> gameObject)
+Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
 {
     this->gameObject = gameObject;
-    // auto s = gameObject->addComponent<SpriteComponent>();
+    auto s = gameObject->addComponent<SpriteComponent>();
+    s->setSprite(*sprite);
     phys = gameObject->addComponent<PhysicsComponent>();
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
@@ -22,24 +23,9 @@ void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, flo
     this->maxLateralImpulse = maxLateralImpulse;
 }
 
-void Tire::updateTurn(char control)
-{
-    // float desiredTorque = 0;
-    // switch (control & (C_LEFT | C_RIGHT))
-    // {
-    // case C_LEFT:
-    //     desiredTorque = maxTorque;
-    //     break;
-    // case C_RIGHT:
-    //     desiredTorque = -maxTorque;
-    //     break;
-    // default:; // nothing
-    // }
-    // phys->addTorque(desiredTorque * 10000);
-}
-
 void Tire::updateFriction()
 {
+
     // auto impulse = phys->getLateralImpulse();
     // if (impulse.length() > maxLateralImpulse)
     //     impulse *= maxLateralImpulse / impulse.length();
@@ -81,9 +67,7 @@ void Tire::updateDrive(char control)
         force = -maxDriveForce;
     else
         return;
-    auto forceVec = glm::vec2(force * 100 * -glm::sin(rotation), force * 100 * glm::cos(rotation));
-    // std::cout << forceVec.x << " " << forceVec.y << "\n";
-    std::cout << phys->body->GetPosition().x << " " << phys->body->GetPosition().y << "\n";
+    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation));
     phys->addForce(forceVec);
 }
 
@@ -94,11 +78,14 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
     glm::vec2 size(30 / 10, 80 / 10);
     phys->initBox(b2_dynamicBody, size, {15 / 10, 40 / 10}, 10);
     phys->setAngularDamping(1);
+}
 
+void Car::initTires(sre::Sprite *tireSprite)
+{
     float maxForwardSpeed = 250;
     float maxBackwardSpeed = -40;
-    float backTireMaxDriveForce = 300;
-    float frontTireMaxDriveForce = 500;
+    float backTireMaxDriveForce = 30000;
+    float frontTireMaxDriveForce = 50000;
     float backTireMaxLateralImpulse = 8.5;
     float frontTireMaxLateralImpulse = 7.5;
 
@@ -109,28 +96,28 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
     jointDef.localAnchorB.SetZero(); // center of tire
 
     // back left tire
-    auto tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    auto tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(-3, -4);
     phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // back right tire
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(3, -4);
     phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front left
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(-3, 3);
     flJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front right
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(3, 3);
     frJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
@@ -142,7 +129,6 @@ void Car::update(float deltaTime)
     for (auto tire : tires)
     {
         tire->updateFriction();
-        // tire->updateTurn(control);
     }
     for (auto tire : tires)
     {
