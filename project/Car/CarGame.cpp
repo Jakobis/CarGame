@@ -72,13 +72,19 @@ void CarGame::init()
     carObj->setPosition({-100, 200});
     so->setSprite(sprite);
 
-    // auto anim = carObj->addComponent<SpriteAnimationComponent>();
-    // auto phys = carObj->addComponent<PhysicsComponent>();
-    // phys->initCircle(b2_dynamicBody, 10 / physicsScale, {carObj->getPosition().x / physicsScale, carObj->getPosition().y / physicsScale}, 1);
-    // phys->body->SetAngularDamping(3);
+    auto carComp = carObj->addComponent<Car>();
+    sprite = spriteAtlas->get("Tire.png");
+    sprite.setScale({2, 2});
+    carComp->initTires(&sprite);
 
-    carObj->addComponent<Car>();
-    // auto carC = carObj->addComponent<CarController>();
+    // Absolute hack -- Sort the car and tires by name, s.t. car is drawn over tires
+    std::sort(
+        sceneObjects.begin(),
+        sceneObjects.end(),
+        [](std::shared_ptr<GameObject> a, std::shared_ptr<GameObject> b)
+        {
+            return a->name > b->name;
+        });
 
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)

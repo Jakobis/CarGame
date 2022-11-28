@@ -15,11 +15,10 @@ enum Control
 class Tire
 {
 public:
-    explicit Tire(std::shared_ptr<GameObject> gameObject);
+    explicit Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite);
     void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse);
     void updateFriction();
     void updateDrive(char control);
-    void updateTurn(char control);
 
 private:
     std::shared_ptr<GameObject> gameObject;
@@ -36,6 +35,7 @@ class Car : public Component
 {
 public:
     explicit Car(GameObject *gameObject);
+    void initTires(sre::Sprite *tireSprite);
     void update(float deltaTime) override;
     bool onKey(SDL_Event &event) override;
 
