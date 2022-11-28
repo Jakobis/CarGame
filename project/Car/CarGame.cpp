@@ -65,7 +65,7 @@ void CarGame::init()
 
     auto carObj = createGameObject();
     carObj->name = "Car";
-    camera->setFollowObject(carObj, {+150, CarGame::windowSize.y / 2});
+    camera->setFollowObject(carObj, {0, 0});
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
     sprite.setScale({2, 2});
@@ -119,7 +119,7 @@ void CarGame::render()
                   .build();
 
     auto pos = camera->getGameObject()->getPosition();
-    backgroundComponent.renderBackground(rp, +pos.x * 0.8f);
+    backgroundComponent.renderBackground(rp, 0);
 
     auto spriteBatchBuilder = SpriteBatch::create();
     for (auto &go : sceneObjects)
@@ -221,7 +221,7 @@ void CarGame::updatePhysics()
         float angle = phys.second->body->GetAngle();
         auto gameObject = phys.second->getGameObject();
         gameObject->setPosition(glm::vec2(position.x * physicsScale, position.y * physicsScale));
-        gameObject->setRotation(angle);
+        gameObject->setRotation(glm::degrees(angle));
     }
 }
 

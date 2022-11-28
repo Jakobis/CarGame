@@ -54,7 +54,7 @@ private:
 
     void updatePhysics();
     b2World *world = nullptr;
-    const float physicsScale = 100;
+    const float physicsScale = 10;
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
     std::map<b2Fixture *, PhysicsComponent *> physicsComponentLookup;

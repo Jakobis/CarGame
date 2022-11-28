@@ -9,44 +9,43 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject)
     this->gameObject = gameObject;
     // auto s = gameObject->addComponent<SpriteComponent>();
     phys = gameObject->addComponent<PhysicsComponent>();
-    phys->initBox(b2_dynamicBody, {300 / 100, 300 / 100}, {3 / 100, 6 / 100}, 10);
+    phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
     currentTraction = 1;
 }
 
-void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse, float maxTorque)
+void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
 {
     this->maxForwardSpeed = maxForwardSpeed;
     this->maxBackwardSpeed = maxBackwardSpeed;
     this->maxDriveForce = maxDriveForce;
     this->maxLateralImpulse = maxLateralImpulse;
-    this->maxTorque = maxTorque;
 }
 
 void Tire::updateTurn(char control)
 {
-    float desiredTorque = 0;
-    switch (control & (C_LEFT | C_RIGHT))
-    {
-    case C_LEFT:
-        desiredTorque = maxTorque;
-        break;
-    case C_RIGHT:
-        desiredTorque = -maxTorque;
-        break;
-    default:; // nothing
-    }
-    phys->addTorque(desiredTorque);
+    // float desiredTorque = 0;
+    // switch (control & (C_LEFT | C_RIGHT))
+    // {
+    // case C_LEFT:
+    //     desiredTorque = maxTorque;
+    //     break;
+    // case C_RIGHT:
+    //     desiredTorque = -maxTorque;
+    //     break;
+    // default:; // nothing
+    // }
+    // phys->addTorque(desiredTorque * 10000);
 }
 
 void Tire::updateFriction()
 {
-    auto impulse = phys->getLateralImpulse();
-    if (impulse.length() > maxLateralImpulse)
-        impulse *= maxLateralImpulse / impulse.length();
-    phys->addImpulse(currentTraction * impulse);
+    // auto impulse = phys->getLateralImpulse();
+    // if (impulse.length() > maxLateralImpulse)
+    //     impulse *= maxLateralImpulse / impulse.length();
+    // phys->addImpulse(currentTraction * impulse);
 
-    phys->addAngularImpulse(currentTraction * 0.1 * phys->getIntertia() * phys->getAngularVelocity());
+    // phys->addAngularImpulse(currentTraction * phys->getIntertia() * phys->getAngularVelocity());
 
     // auto currentForwardNormal = phys->getForwardVelocity();
     // auto currentForwardSpeed = currentForwardNormal.g;
@@ -70,10 +69,9 @@ void Tire::updateDrive(char control)
         return; // do nothing
     }
 
-    // find current speed in forward direction
-    auto currentForwardNormal = phys->getForwardVelocity(); // m_body->GetWorldVector(b2Vec2(0, 1));
-    float currentSpeed = currentForwardNormal.length();
-    // float currentSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
+    auto vel = phys->getLinearVelocity();
+    float currentSpeed = vel.length();
+    auto rotation = phys->getAngle();
 
     // apply necessary force
     float force = 0;
@@ -83,17 +81,19 @@ void Tire::updateDrive(char control)
         force = -maxDriveForce;
     else
         return;
-    std::cout << currentSpeed << " " << force << "\n";
-    phys->addForce({0, force * 10});
+    auto forceVec = glm::vec2(force * 100 * -glm::sin(rotation), force * 100 * glm::cos(rotation));
+    // std::cout << forceVec.x << " " << forceVec.y << "\n";
+    std::cout << phys->body->GetPosition().x << " " << phys->body->GetPosition().y << "\n";
+    phys->addForce(forceVec);
 }
 
 Car::Car(GameObject *gameObject) : Component(gameObject)
 {
     this->gameObject = gameObject;
     phys = gameObject->addComponent<PhysicsComponent>();
-    glm::vec2 size(200 / 100, 500 / 100);
-    phys->initBox(b2_dynamicBody, size, {10 / 100, 25 / 100}, 10);
-    phys->setAngularDamping(3);
+    glm::vec2 size(30 / 10, 80 / 10);
+    phys->initBox(b2_dynamicBody, size, {15 / 10, 40 / 10}, 10);
+    phys->setAngularDamping(1);
 
     float maxForwardSpeed = 250;
     float maxBackwardSpeed = -40;
@@ -101,7 +101,6 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
     float frontTireMaxDriveForce = 500;
     float backTireMaxLateralImpulse = 8.5;
     float frontTireMaxLateralImpulse = 7.5;
-    float maxTorque = glm::radians(15.0);
 
     b2RevoluteJointDef jointDef;
     jointDef.enableLimit = true;
@@ -111,16 +110,30 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
 
     // back left tire
     auto tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, maxTorque);
-    jointDef.localAnchorA.Set(-3, 0.75);
+    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+    jointDef.localAnchorA.Set(-3, -4);
     phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // back right tire
     tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, maxTorque);
-    jointDef.localAnchorA.Set(3, 0.75);
+    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+    jointDef.localAnchorA.Set(3, -4);
     phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    tires.push_back(tire);
+
+    // front left
+    tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    jointDef.localAnchorA.Set(-3, 3);
+    flJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    tires.push_back(tire);
+
+    // front right
+    tire = std::make_shared<Tire>(CarGame::instance->createGameObject());
+    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    jointDef.localAnchorA.Set(3, 3);
+    frJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 }
 
@@ -129,6 +142,7 @@ void Car::update(float deltaTime)
     for (auto tire : tires)
     {
         tire->updateFriction();
+        // tire->updateTurn(control);
     }
     for (auto tire : tires)
     {
@@ -136,7 +150,7 @@ void Car::update(float deltaTime)
     }
     // control steering
     float lockAngle = glm::radians(35.0);
-    float turnSpeedPerSec = glm::radians(160.0); // from lock to lock in 0.5 sec
+    float turnSpeedPerSec = glm::radians(100.0); // from lock to lock in 0.5 sec
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (control & (C_LEFT | C_RIGHT))
@@ -149,6 +163,12 @@ void Car::update(float deltaTime)
         break;
     default:; // nothing
     }
+    float angleNow = flJoint->GetJointAngle();
+    float angleToTurn = desiredAngle - angleNow;
+    angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
+    float newAngle = angleNow + angleToTurn;
+    flJoint->SetLimits(newAngle, newAngle);
+    frJoint->SetLimits(newAngle, newAngle);
 }
 
 bool Car::onKey(SDL_Event &event)

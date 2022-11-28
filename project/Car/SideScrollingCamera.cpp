@@ -10,7 +10,7 @@ using namespace glm;
 SideScrollingCamera::SideScrollingCamera(GameObject *gameObject)
     : Component(gameObject)
 {
-    camera.setOrthographicProjection(CarGame::windowSize.y * 4, -1, 1);
+    camera.setOrthographicProjection(CarGame::windowSize.y, -1, 1);
 }
 
 sre::Camera &SideScrollingCamera::getCamera()
