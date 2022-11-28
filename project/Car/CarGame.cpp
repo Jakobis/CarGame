@@ -86,8 +86,6 @@ void CarGame::init()
             return a->name > b->name;
         });
 
-    carObj->addComponent<Car>();
-
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)
     // {
