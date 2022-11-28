@@ -29,4 +29,10 @@ void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
 void EnemyComponent::update(float deltaTime)
 {
     auto phys = gameObject->getComponent<PhysicsComponent>();
+    gameObject->setPosition((player->getPosition() - gameObject->getPosition()) * speed * deltaTime);
+}
+
+void EnemyComponent::init(std::shared_ptr<GameObject> player) 
+{
+    this->player = player;
 }
