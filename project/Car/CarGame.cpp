@@ -7,8 +7,8 @@
 #include "SpriteAnimationComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
-#include "CarController.hpp"
 #include "Car.hpp"
+#include "EnemyComponent.hpp"
 
 using namespace std;
 using namespace sre;
@@ -86,6 +86,8 @@ void CarGame::init()
             return a->name > b->name;
         });
 
+    carObj->addComponent<Car>();
+
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)
     // {
@@ -94,6 +96,16 @@ void CarGame::init()
     // anim->setSprites(spriteAnim);
 
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
+
+    auto enemyObj = createGameObject();
+    enemyObj->name = "Enemy";
+    auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
+    auto enemySprite = spriteAtlas->get("Truck.png");
+    enemySprite.setScale({2, 2});
+    enemyObj->setPosition({200, 200});
+    enemySpriteComponent->setSprite(enemySprite);
+    auto enemyComp = enemyObj->addComponent<EnemyComponent>();
+    enemyComp->init(carObj);
 }
 
 void CarGame::update(float time)
