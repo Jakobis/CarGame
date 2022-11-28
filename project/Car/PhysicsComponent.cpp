@@ -71,6 +71,11 @@ glm::vec2 PhysicsComponent::getLinearVelocity()
     b2Vec2 v = body->GetLinearVelocity();
     return {v.x, v.y};
 }
+glm::vec2 PhysicsComponent::getLinearImpulse()
+{
+    b2Vec2 v = body->GetMass() * body->GetLinearVelocity();
+    return {v.x, v.y};
+}
 
 void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 {

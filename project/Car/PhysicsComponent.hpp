@@ -35,6 +35,7 @@ public:
     void addTorque(float torque);
 
     glm::vec2 getLinearVelocity();
+    glm::vec2 getLinearImpulse();
 
     glm::vec2 getForwardVelocity();
 

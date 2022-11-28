@@ -27,7 +27,7 @@ private:
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
-    float currentTraction;
+    float currentTraction; // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
     friend class Car;
 };
 
