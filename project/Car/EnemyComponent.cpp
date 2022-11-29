@@ -15,8 +15,8 @@ EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
 {
     this->gameObject = gameObject;
     auto phys = gameObject->addComponent<PhysicsComponent>();
-    glm::vec2 size(20 / 10, 50 / 10);
-    phys->initBox(b2_dynamicBody, size, {10 / 10, 25 / 10}, 10);
+    glm::vec2 size(30 / 10, 80 / 10);
+    phys->initBox(b2_dynamicBody, size, {size.x/2, size.y / 2}, 5);
 }
 
 
