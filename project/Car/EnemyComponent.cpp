@@ -38,7 +38,7 @@ void EnemyComponent::update(float deltaTime)
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
     //phys->addForce({1000, 0});
     //gameObject->setPosition(gameObject->getPosition() + glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-    std::cout << "Enemy: " << gameObject->getPosition().x << " " << gameObject->getPosition().y << "\n";
+    // std::cout << "Enemy: " << gameObject->getPosition().x << " " << gameObject->getPosition().y << "\n";
 }
 
 void EnemyComponent::init(std::shared_ptr<GameObject> player) 

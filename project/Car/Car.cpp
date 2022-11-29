@@ -12,7 +12,7 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     phys = gameObject->addComponent<PhysicsComponent>();
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
-    currentTraction = 0.5;
+    currentTraction = 0.3;
 }
 
 void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
@@ -27,13 +27,17 @@ void Tire::updateFriction()
 {
     auto angle = phys->getAngle();
     float ratio = 2;
-    glm::vec2 traction(-glm::sin(angle), glm::cos(angle));
+    glm::vec2 forwardTraction(-glm::sin(angle), glm::cos(angle));
+    glm::vec2 lateralTraction(forwardTraction.y, -forwardTraction.x);
     auto impulse = 100 * currentTraction * -phys->getLinearImpulse();
-    auto forwardImpulse = (impulse / ratio) * glm::vec2(-glm::sin(angle), glm::cos(angle));
-    auto lateralImpulse = (impulse)*glm::vec2(glm::cos(angle), glm::sin(angle));
+    auto forwardImpulse = (impulse / ratio) * forwardTraction;
+    auto lateralImpulse = impulse * lateralTraction;
     phys->addForce(impulse);
-    std::cout << "fw imp " << forwardImpulse.x << " " << forwardImpulse.y << "\n";
-    std::cout << "lt imp " << lateralImpulse.x << " " << lateralImpulse.y << "\n";
+    // std::cout << "n " << forwardTraction.x << " " << forwardTraction.y << "\n";
+    // std::cout << angle << ";"
+    //           << impulse.x << ";" << impulse.y << ";"
+    //           << forwardImpulse.x << ";" << forwardImpulse.y << ";"
+    //           << lateralImpulse.x << ";" << lateralImpulse.y << "\n";
 }
 
 void Tire::updateDrive(char control)
