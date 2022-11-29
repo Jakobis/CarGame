@@ -127,7 +127,7 @@ void CarGame::render()
                   .build();
 
     auto pos = camera->getGameObject()->getPosition();
-    backgroundComponent.renderBackground(rp, 0);
+    backgroundComponent.renderBackground(rp, pos.x, pos.y);
 
     auto spriteBatchBuilder = SpriteBatch::create();
     for (auto &go : sceneObjects)
