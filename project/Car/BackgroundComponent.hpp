@@ -10,8 +10,9 @@ class BackgroundComponent
 public:
     BackgroundComponent();
     void init(sre::Sprite sprite);
-    void renderBackground(sre::RenderPass &renderPass, float offset);
+    void renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY);
 
 private:
     std::shared_ptr<sre::SpriteBatch> batch;
+    glm::vec2 spriteSize;
 };

@@ -16,20 +16,26 @@ BackgroundComponent::BackgroundComponent()
 {
 }
 
-void BackgroundComponent::renderBackground(sre::RenderPass &renderPass, float offset)
+void BackgroundComponent::renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY)
 {
-    renderPass.draw(batch, glm::translate(vec3(offset, 0, 0)));
+    float x = offsetX - (std::fmod(offsetX, spriteSize.x));
+    float y = offsetY - (std::fmod(offsetY, spriteSize.y));
+    renderPass.draw(batch, glm::translate(vec3(x, y, 0)));
 }
 
 void BackgroundComponent::init(sre::Sprite sprite)
 {
     float scale = CarGame::windowSize.y / sprite.getSpriteSize().y;
     sprite.setScale({scale, scale});
+    spriteSize = sprite.getSpriteSize();
+    spriteSize *= scale;
     auto batchBuilder = SpriteBatch::create();
-    for (int i = 0; i < 100; i++)
-    {
-        sprite.setPosition(vec2(sprite.getSpriteSize().x * (i - 1) * scale, 0));
-        batchBuilder.addSprite(sprite);
-    }
+    // 10 x 10 to be extra careful about wack screen sizes
+    for (int i = -4; i < 6; i++)
+        for (int j = -4; j < 6; j++)
+        {
+            sprite.setPosition({sprite.getSpriteSize().x * (i - 1) * scale, sprite.getSpriteSize().y * (j - 1) * scale});
+            batchBuilder.addSprite(sprite);
+        }
     batch = batchBuilder.build();
 }
