@@ -28,6 +28,7 @@ private:
     float maxDriveForce;
     float maxLateralImpulse;
     float currentTraction; // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
+    float dragRatio;       // Between 0-1, describes how much of the traction translates to drag
     friend class Car;
 };
 

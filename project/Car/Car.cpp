@@ -13,6 +13,7 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
     currentTraction = 0.3;
+    dragRatio = 0.5;
 }
 
 void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
@@ -26,14 +27,13 @@ void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, flo
 void Tire::updateFriction()
 {
     auto angle = phys->getAngle();
-    float ratio = 2;
+
     glm::vec2 forwardTraction(-glm::sin(angle), glm::cos(angle));
     glm::vec2 lateralTraction(forwardTraction.y, -forwardTraction.x);
     auto impulse = 100 * currentTraction * -phys->getLinearImpulse();
-    auto forwardImpulse = (impulse / ratio) * forwardTraction;
-    auto lateralImpulse = impulse * lateralTraction;
-    phys->addForce(impulse);
-    // std::cout << "n " << forwardTraction.x << " " << forwardTraction.y << "\n";
+    auto forwardImpulse = glm::dot(forwardTraction, impulse) * forwardTraction * dragRatio;
+    auto lateralImpulse = glm::dot(lateralTraction, impulse) * lateralTraction;
+    phys->addForce(forwardImpulse + lateralImpulse);
     // std::cout << angle << ";"
     //           << impulse.x << ";" << impulse.y << ";"
     //           << forwardImpulse.x << ";" << forwardImpulse.y << ";"
