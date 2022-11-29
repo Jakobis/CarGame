@@ -2,7 +2,7 @@
 
 {
 	"filename": "asphalt.png",
-	"frame": {"x":0,"y":0,"w":170,"h":170},
+	"frame": {"x":1,"y":1,"w":168,"h":168},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},

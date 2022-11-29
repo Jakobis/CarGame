@@ -12,8 +12,9 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     phys = gameObject->addComponent<PhysicsComponent>();
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
-    currentTraction = 0.3;
+    currentTraction = 0.5;
     dragRatio = 0.5;
+    currentEngineSpeed = 0;
 }
 
 void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
@@ -42,17 +43,21 @@ void Tire::updateFriction()
 
 void Tire::updateDrive(char control)
 {
+    float accel = 0.2;
     // find desired speed
     float desiredSpeed = 0;
     switch (control & (C_UP | C_DOWN))
     {
     case C_UP:
         desiredSpeed = maxForwardSpeed;
+        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
         break;
     case C_DOWN:
         desiredSpeed = maxBackwardSpeed;
+        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
         break;
     default:
+        currentEngineSpeed -= currentEngineSpeed > 1e-6 ? currentEngineSpeed * accel : currentEngineSpeed;
         return; // do nothing
     }
 
@@ -68,7 +73,7 @@ void Tire::updateDrive(char control)
         force = -maxDriveForce;
     else
         return;
-    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation));
+    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation)) * currentEngineSpeed;
     phys->addForce(forceVec);
 }
 
