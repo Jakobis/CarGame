@@ -32,8 +32,9 @@ void Tire::updateFriction()
     auto forwardImpulse = (impulse / ratio) * glm::vec2(-glm::sin(angle), glm::cos(angle));
     auto lateralImpulse = (impulse)*glm::vec2(glm::cos(angle), glm::sin(angle));
     phys->addForce(impulse);
-    std::cout << "fw imp " << forwardImpulse.x << " " << forwardImpulse.y << "\n";
-    std::cout << "lt imp " << lateralImpulse.x << " " << lateralImpulse.y << "\n";
+    //std::cout << "fw imp " << forwardImpulse.x << " " << forwardImpulse.y << "\n";
+    //std::cout << "lt imp " << lateralImpulse.x << " " << lateralImpulse.y << "\n";
+    //std::cout << phys->getLinearVelocity().length() << "\n";
 }
 
 void Tire::updateDrive(char control)

@@ -14,7 +14,6 @@
 EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
 {
     this->gameObject = gameObject;
-    gameObject->setPosition({2000, 200});
     auto phys = gameObject->addComponent<PhysicsComponent>();
     glm::vec2 size(20 / 10, 50 / 10);
     phys->initBox(b2_dynamicBody, size, {10 / 10, 25 / 10}, 10);
@@ -24,6 +23,11 @@ EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
 void EnemyComponent::onCollisionStart(PhysicsComponent *comp)
 {
     std::cout << "Enemy collided with something" << std::endl;
+    if (comp->getGameObject()->name == CarGame::instance->carName) {
+        auto collisionspeed = comp->getLinearVelocity() - gameObject->getComponent<PhysicsComponent>()->getLinearVelocity();
+        std::cout << glm::length(collisionspeed) << "\n";
+    }
+
 }
 
 void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
@@ -33,12 +37,11 @@ void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
 void EnemyComponent::update(float deltaTime)
 {
     auto phys = gameObject->getComponent<PhysicsComponent>();
-    //std::cout << nullptr<< "\n";
     auto desiredPosition = player->getPosition();
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-    //phys->addForce({1000, 0});
-    //gameObject->setPosition(gameObject->getPosition() + glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-    std::cout << "Enemy: " << gameObject->getPosition().x << " " << gameObject->getPosition().y << "\n";
+    //std::cout << "Enemy: " << glm::length(phys->getLinearVelocity()) << "\n";
+    //phys->addAngularImpulse(player->getComponent<PhysicsComponent>()->getAngle() - phys->getAngle());
+
 }
 
 void EnemyComponent::init(std::shared_ptr<GameObject> player) 

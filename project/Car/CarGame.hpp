@@ -31,6 +31,7 @@ public:
     static CarGame *instance;
 
     void setGameState(GameState newState);
+    std::string carName = "Car";
 
 private:
     sre::SDLRenderer r;

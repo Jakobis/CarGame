@@ -64,7 +64,7 @@ void CarGame::init()
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
 
     auto carObj = createGameObject();
-    carObj->name = "Car";
+    carObj->name = carName;
     camera->setFollowObject(carObj, {0, 0});
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
