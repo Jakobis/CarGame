@@ -50,15 +50,24 @@ void Tire::updateDrive(char control)
     {
     case C_UP:
         desiredSpeed = maxForwardSpeed;
-        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
+        if (currentEngineSpeed < -1e-2)
+            currentEngineSpeed -= currentEngineSpeed * accel;
+        else
+            currentEngineSpeed += (1 - currentEngineSpeed) * accel;
         break;
     case C_DOWN:
         desiredSpeed = maxBackwardSpeed;
-        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
+        if (currentEngineSpeed > 1e-2)
+            currentEngineSpeed -= currentEngineSpeed * accel;
+        else
+            currentEngineSpeed += (-1 - currentEngineSpeed) * accel;
         break;
     default:
-        currentEngineSpeed -= currentEngineSpeed > 1e-6 ? currentEngineSpeed * accel : currentEngineSpeed;
-        return; // do nothing
+        if (std::abs(currentEngineSpeed) < 1e-4)
+            currentEngineSpeed = 0;
+        else
+            currentEngineSpeed -= currentEngineSpeed * accel;
+        return; // do nothing beyond this
     }
 
     auto vel = phys->getLinearVelocity();
@@ -73,7 +82,7 @@ void Tire::updateDrive(char control)
         force = -maxDriveForce;
     else
         return;
-    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation)) * currentEngineSpeed;
+    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation)) * std::abs(currentEngineSpeed);
     phys->addForce(forceVec);
 }
 
