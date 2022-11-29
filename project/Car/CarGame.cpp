@@ -24,7 +24,7 @@ CarGame::CarGame()
     r.setWindowSize(windowSize);
     r.init()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
-        .withSdlWindowFlags(SDL_WINDOW_OPENGL);
+        .withSdlWindowFlags(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     init();
 
@@ -153,6 +153,7 @@ void CarGame::render()
     {
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
+        // rp.drawLines({{0, 0, 0}, {1000, 1000, 0}}, {1, 0, 0, 1});
         debugDraw.clear();
     }
 }

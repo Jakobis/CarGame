@@ -13,6 +13,8 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
     phys->setSensor(true);
     currentTraction = 0.5;
+    dragRatio = 0.5;
+    currentEngineSpeed = 0;
 }
 
 void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
@@ -26,30 +28,36 @@ void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, flo
 void Tire::updateFriction()
 {
     auto angle = phys->getAngle();
-    float ratio = 2;
-    glm::vec2 traction(-glm::sin(angle), glm::cos(angle));
+
+    glm::vec2 forwardTraction(-glm::sin(angle), glm::cos(angle));
+    glm::vec2 lateralTraction(forwardTraction.y, -forwardTraction.x);
     auto impulse = 100 * currentTraction * -phys->getLinearImpulse();
-    auto forwardImpulse = (impulse / ratio) * glm::vec2(-glm::sin(angle), glm::cos(angle));
-    auto lateralImpulse = (impulse)*glm::vec2(glm::cos(angle), glm::sin(angle));
-    phys->addForce(impulse);
-    //std::cout << "fw imp " << forwardImpulse.x << " " << forwardImpulse.y << "\n";
-    //std::cout << "lt imp " << lateralImpulse.x << " " << lateralImpulse.y << "\n";
-    //std::cout << phys->getLinearVelocity().length() << "\n";
+    auto forwardImpulse = glm::dot(forwardTraction, impulse) * forwardTraction * dragRatio;
+    auto lateralImpulse = glm::dot(lateralTraction, impulse) * lateralTraction;
+    phys->addForce(forwardImpulse + lateralImpulse);
+    // std::cout << angle << ";"
+    //           << impulse.x << ";" << impulse.y << ";"
+    //           << forwardImpulse.x << ";" << forwardImpulse.y << ";"
+    //           << lateralImpulse.x << ";" << lateralImpulse.y << "\n";
 }
 
 void Tire::updateDrive(char control)
 {
+    float accel = 0.2;
     // find desired speed
     float desiredSpeed = 0;
     switch (control & (C_UP | C_DOWN))
     {
     case C_UP:
         desiredSpeed = maxForwardSpeed;
+        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
         break;
     case C_DOWN:
         desiredSpeed = maxBackwardSpeed;
+        currentEngineSpeed += (1 - currentEngineSpeed) * accel;
         break;
     default:
+        currentEngineSpeed -= currentEngineSpeed > 1e-6 ? currentEngineSpeed * accel : currentEngineSpeed;
         return; // do nothing
     }
 
@@ -65,7 +73,7 @@ void Tire::updateDrive(char control)
         force = -maxDriveForce;
     else
         return;
-    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation));
+    auto forceVec = glm::vec2(force * -glm::sin(rotation), force * glm::cos(rotation)) * currentEngineSpeed;
     phys->addForce(forceVec);
 }
 
