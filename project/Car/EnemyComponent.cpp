@@ -22,12 +22,7 @@ EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
 
 void EnemyComponent::onCollisionStart(PhysicsComponent *comp)
 {
-    std::cout << "Enemy collided with something" << std::endl;
-    if (comp->getGameObject()->name == CarGame::instance->carName) {
-        auto collisionspeed = comp->getLinearVelocity() - gameObject->getComponent<PhysicsComponent>()->getLinearVelocity();
-        std::cout << glm::length(collisionspeed) << "\n";
-    }
-
+    //std::cout << "Enemy collided with something" << std::endl;
 }
 
 void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
@@ -39,8 +34,6 @@ void EnemyComponent::update(float deltaTime)
     auto phys = gameObject->getComponent<PhysicsComponent>();
     auto desiredPosition = player->getPosition();
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-    //std::cout << "Enemy: " << glm::length(phys->getLinearVelocity()) << "\n";
-    //phys->addAngularImpulse(player->getComponent<PhysicsComponent>()->getAngle() - phys->getAngle());
 
 }
 

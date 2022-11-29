@@ -9,6 +9,7 @@
 #include "PhysicsComponent.hpp"
 #include "Car.hpp"
 #include "EnemyComponent.hpp"
+#include "KillableComponent.hpp"
 
 using namespace std;
 using namespace sre;
@@ -104,6 +105,7 @@ void CarGame::init()
     enemySpriteComponent->setSprite(enemySprite);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
     enemyComp->init(carObj);
+    enemyObj->addComponent<KillableComponent>();
 }
 
 void CarGame::update(float time)
