@@ -40,6 +40,7 @@ public:
     glm::vec2 getForwardVelocity();
 
     glm::vec2 getLateralImpulse();
+    glm::vec2 getDirectionVector();
 
     bool isSensor();
 
