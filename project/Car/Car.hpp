@@ -42,7 +42,6 @@ public:
     bool onKey(SDL_Event &event) override;
     void onCollisionStart(PhysicsComponent *comp) override;
 
-
 private:
     GameObject *gameObject;
     std::shared_ptr<PhysicsComponent> phys;
@@ -51,7 +50,8 @@ private:
     b2RevoluteJoint *frJoint;
     char control = 0;
     float safeangle = 30;
-    float health = 1000;
     float maxHealth = 1000;
+    float health = maxHealth;
     float damageSpeedThreshold = 100;
+    friend class CarGame;
 };

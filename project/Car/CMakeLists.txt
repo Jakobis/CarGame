@@ -19,7 +19,7 @@ file(GLOB Car
 # Compile cpp files (from Snake variable)
 add_executable(Car-Game ${Car})
 target_link_libraries(Car-Game ${all_libs})
-set(rawFiles car.json car.png)
+set(rawFiles car.json car.png assets)
 
 # copy files to dest
 file(COPY ${rawFiles} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)

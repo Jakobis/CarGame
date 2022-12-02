@@ -28,6 +28,21 @@ CarGame::CarGame()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
+    // load high resolution font into imgui
+    ImGuiIO &io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("assets/Roboto-Medium.ttf", 36.0f);
+
+    // set imgui font size
+    io.FontGlobalScale = 1.0f;
+
+    ImGuiStyle &style = ImGui::GetStyle();
+    style.Alpha = 1;
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0, 0, 0, 0);
+    style.Colors[ImGuiCol_Text] = ImVec4(0, 0, 0, 1);
+    style.Colors[ImGuiCol_Border] = ImVec4(0, 0, 0, 0);
+    style.Colors[ImGuiCol_FrameBg] = ImVec4(0.8, 0.1, 0.1, 1);
+    style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.1, 0.8, 0.1, 1);
+
     std::random_device rd;
     gen = std::mt19937(rd());
     ran = std::uniform_real_distribution<double>(0, 1);
@@ -190,22 +205,15 @@ void CarGame::render()
     {
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
-        // rp.drawLines({{0, 0, 0}, {1000, 1000, 0}}, {1, 0, 0, 1});
-        auto material = Shader::getUnlit()->createMaterial();
-        auto mesh = Mesh::create()
-                        .withCube()
-                        // .withPositions({{0, 0, 0}, {100, 100, 0}, {100, 0, 0}, {100, 100, 0}})
-                        // .withMeshTopology(MeshTopology::Lines)
-                        .build();
-
-        // update material
-        material->setColor({1, 0, 0, 1});
-        glm::mat4 transform(1);
-        transform = glm::translate(transform, glm::vec3(camera->getGameObject()->getPosition(), 0));
-        transform = glm::scale(transform, {300, 20, 0.1});
-        rp.draw(mesh, transform, material);
         debugDraw.clear();
     }
+
+    ImGui::SetNextWindowPos(ImVec2(0, .0f), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(600, 60), ImGuiSetCond_Always);
+    ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    auto car = carObj->getComponent<Car>();
+    ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string(car->health).data());
+    ImGui::End();
 }
 
 void CarGame::onKey(SDL_Event &event)
