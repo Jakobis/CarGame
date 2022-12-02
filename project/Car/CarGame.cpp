@@ -117,8 +117,19 @@ void CarGame::init()
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 
     
-    spawnBuilding({1000, 1000});
-    spawnBuilding({1000, 2000});
+    int buildingAmount = 10;
+    int buildingDistance = 2000;
+    int offset = (-buildingAmount / 2) * buildingDistance;
+    int counter = 0;
+    for (int i = 0; i < buildingAmount; i++)
+    {
+        for (int j = 0; j < buildingAmount; j++)
+        {
+            glm::vec2 position = {offset + (i * buildingDistance), offset + (j * buildingDistance)};
+            spawnBuilding(position);
+            std::cout << position.x << " " << position.y << std::endl;
+        }
+    }
     spawnEnemy();
 }
 
