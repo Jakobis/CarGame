@@ -12,6 +12,7 @@
 #include "KillableComponent.hpp"
 #include <random>
 #include "glm/gtc/matrix_transform.hpp"
+#include "SDL_mixer.h"
 
 using namespace sre;
 
@@ -78,8 +79,33 @@ void CarGame::init()
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
+    Mix_OpenAudio(
+        22050, // int frequency
+        MIX_DEFAULT_FORMAT, // Uint16 format
+        2, // int channels
+        2048 // int buffer size (controls the latency, 2048 good default)
+    );
+    Mix_Music* music = Mix_LoadMUS("./assets/music.mp3");
+    //Mix_PlayMusic(music, -1);
+
+    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
+    // Plays an SFX on the desired SFX channel
+    Mix_PlayChannel(
+    -1, // int channel to play on (-1 is first available)
+    my_sound, // Mix_Chunk* chunk to play
+    0 // int number loops
+    );
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
+    explosionSprites = std::vector<sre::Sprite>();
+    for (int i = 0; i < 16; i++)
+    {
+        auto name = "explosion/tile0" + std::to_string(i) + ".png";
+        auto sprite = spriteAtlas->get(name);
+        sprite.setScale({2,2});
+        explosionSprites.push_back(sprite);
+    }
+    
 
     carObj = createGameObject();
     carObj->name = carName;
@@ -113,21 +139,36 @@ void CarGame::init()
 
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 
+    
+    int buildingAmount = 10;
+    int buildingDistance = 2000;
+    int offset = (-buildingAmount / 2) * buildingDistance;
+    int counter = 0;
+    for (int i = 0; i < buildingAmount; i++)
+    {
+        for (int j = 0; j < buildingAmount; j++)
+        {
+            glm::vec2 position = {offset + (i * buildingDistance), offset + (j * buildingDistance)};
+            spawnBuilding(position);
+        }
+    }
+    spawnEnemy();
+}
+
+void CarGame::spawnBuilding(glm::vec2 position) 
+{
     auto buildingObj = createGameObject();
     buildingObj->name = "Building";
     auto buildingSpriteComponent = buildingObj->addComponent<SpriteComponent>();
     auto buildingSprite = spriteAtlas->get("building.jpg");
-    float buildingScale = 10;
+    float buildingScale = 8;
     buildingSprite.setScale({buildingScale*2, buildingScale*2});
-    glm::vec2 position(1000, 1000);
     buildingObj->setPosition(position);
     buildingSpriteComponent->setSprite(buildingSprite);
     auto buildingPhys = buildingObj->addComponent<PhysicsComponent>();
     glm::vec2 size = buildingSprite.getSpriteSize();
     float physicsScale = 10;
     buildingPhys->initBox(b2_staticBody, size * buildingScale / physicsScale, position / physicsScale, 5);
-    
-    spawnEnemy();
 }
 
 void CarGame::spawnEnemy(glm::vec2 position)
@@ -158,6 +199,7 @@ void CarGame::update(float time)
     {
         worldTime = fmod(worldTime, 5);
         spawnEnemy();
+        
     }
     if (gameState == GameState::Running)
     {
@@ -166,6 +208,9 @@ void CarGame::update(float time)
     for (int i = 0; i < sceneObjects.size(); i++)
     {
         sceneObjects[i]->update(time);
+        if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr) {
+            spawnExplosion(sceneObjects[i]->getPosition());
+        }
     }
     // remove_if from <algorithm> moves elements to the end of the vector...
     auto it = std::remove_if(
@@ -179,6 +224,24 @@ void CarGame::update(float time)
     // ...so that we may remove them in O(n)
 
     sceneObjects.erase(it, sceneObjects.end());
+}
+
+void CarGame::spawnExplosion(glm::vec2 position) {
+    auto obj = createGameObject();
+    obj->setPosition(position);
+    auto sc = obj->addComponent<SpriteComponent>();
+    sc->setSprite(explosionSprites.at(0));
+    auto sac = obj->addComponent<SpriteAnimationComponent>();
+    sac->setSprites(explosionSprites);
+    sac->setAnimationTime(0.1);
+    sac->setRepeating(false);
+    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
+    // Plays an SFX on the desired SFX channel
+    Mix_PlayChannel(
+    -1, // int channel to play on (-1 is first available)
+    my_sound, // Mix_Chunk* chunk to play
+    0 // int number loops
+    );
 }
 
 void CarGame::render()

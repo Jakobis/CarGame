@@ -48,11 +48,14 @@ private:
 
     void handleContact(b2Contact *contact, bool begin);
 
+    void spawnBuilding(glm::vec2 position);
     void spawnEnemy(glm::vec2 position = glm::vec2(0, 0));
+    void spawnExplosion(glm::vec2 position);
 
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<GameObject> carObj;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
+    std::vector<sre::Sprite> explosionSprites;
 
     std::uniform_real_distribution<double> ran;
     std::mt19937 gen;

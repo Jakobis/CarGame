@@ -14,7 +14,7 @@ public:
     void update(float deltaTime) override;
 
 private:
-    float maxHealth = 200;
+    float maxHealth = 100;
     float health = maxHealth;
     float damageSpeedThreshold = 100;
     friend class CarGame;

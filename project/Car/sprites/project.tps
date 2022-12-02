@@ -218,6 +218,51 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">building.jpg</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,12,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,12,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">explosion/tile00.png</key>
+            <key type="filename">explosion/tile01.png</key>
+            <key type="filename">explosion/tile010.png</key>
+            <key type="filename">explosion/tile011.png</key>
+            <key type="filename">explosion/tile012.png</key>
+            <key type="filename">explosion/tile013.png</key>
+            <key type="filename">explosion/tile014.png</key>
+            <key type="filename">explosion/tile015.png</key>
+            <key type="filename">explosion/tile02.png</key>
+            <key type="filename">explosion/tile03.png</key>
+            <key type="filename">explosion/tile04.png</key>
+            <key type="filename">explosion/tile05.png</key>
+            <key type="filename">explosion/tile06.png</key>
+            <key type="filename">explosion/tile07.png</key>
+            <key type="filename">explosion/tile08.png</key>
+            <key type="filename">explosion/tile09.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9Paddings</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
