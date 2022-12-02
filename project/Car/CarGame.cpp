@@ -83,6 +83,15 @@ void CarGame::init()
     camObj->setPosition(windowSize * 0.5f);
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
+    explosionSprites = std::vector<sre::Sprite>();
+    for (int i = 0; i < 16; i++)
+    {
+        auto name = "explosion/tile0" + std::to_string(i) + ".png";
+        auto sprite = spriteAtlas->get(name);
+        sprite.setScale({2,2});
+        explosionSprites.push_back(sprite);
+    }
+    
 
     carObj = createGameObject();
     carObj->name = carName;
@@ -184,6 +193,9 @@ void CarGame::update(float time)
     for (int i = 0; i < sceneObjects.size(); i++)
     {
         sceneObjects[i]->update(time);
+        if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr) {
+            spawnExplosion(sceneObjects[i]->getPosition());
+        }
     }
     // remove_if from <algorithm> moves elements to the end of the vector...
     auto it = std::remove_if(
@@ -197,6 +209,17 @@ void CarGame::update(float time)
     // ...so that we may remove them in O(n)
 
     sceneObjects.erase(it, sceneObjects.end());
+}
+
+void CarGame::spawnExplosion(glm::vec2 position) {
+    auto obj = createGameObject();
+    obj->setPosition(position);
+    auto sc = obj->addComponent<SpriteComponent>();
+    sc->setSprite(explosionSprites.at(0));
+    auto sac = obj->addComponent<SpriteAnimationComponent>();
+    sac->setSprites(explosionSprites);
+    sac->setAnimationTime(0.1);
+    sac->setRepeating(false);
 }
 
 void CarGame::render()

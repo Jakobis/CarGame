@@ -5,6 +5,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include <memory>
+#include <iostream>
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {}
 
@@ -17,7 +18,12 @@ void SpriteAnimationComponent::update(float deltaTime) {
 
     if (time > animationTime){
         time = fmod(time, animationTime);
+        auto last = spriteIndex;
         spriteIndex = (spriteIndex + 1) % sprites.size();
+        if (!repeating && (spriteIndex < last)) {
+            gameObject->remove();
+        }
+        //std::cout << !repeating << " " << (spriteIndex < last) << "\n";
         spriteComponent->setSprite(sprites[spriteIndex]);
     }
 }
@@ -32,4 +38,7 @@ float SpriteAnimationComponent::getAnimationTime() const {
 
 void SpriteAnimationComponent::setAnimationTime(float animationTime) {
     SpriteAnimationComponent::animationTime = animationTime;
+}
+void SpriteAnimationComponent::setRepeating(bool repeating) {
+    this->repeating = repeating;
 }
