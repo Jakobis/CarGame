@@ -77,6 +77,13 @@ glm::vec2 PhysicsComponent::getLinearImpulse()
     return {v.x, v.y};
 }
 
+glm::vec2 PhysicsComponent::getDirectionVector()
+{
+    auto angle = getAngle();
+    glm::vec2 forwardTraction(-glm::sin(angle), glm::cos(angle));
+    return forwardTraction;
+}
+
 void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 {
     b2Vec2 v{velocity.x, velocity.y};

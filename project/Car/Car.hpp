@@ -40,6 +40,8 @@ public:
     void initTires(sre::Sprite *tireSprite);
     void update(float deltaTime) override;
     bool onKey(SDL_Event &event) override;
+    void onCollisionStart(PhysicsComponent *comp) override;
+
 
 private:
     GameObject *gameObject;
@@ -48,4 +50,8 @@ private:
     b2RevoluteJoint *flJoint;
     b2RevoluteJoint *frJoint;
     char control = 0;
+    float safeangle = 30;
+    float health = 1000;
+    float maxHealth = 1000;
+    float damageSpeedThreshold = 100;
 };
