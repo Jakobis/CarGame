@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "asphalt.png",
+	"filename": "sprites/asphalt.png",
 	"frame": {"x":0,"y":0,"w":170,"h":170},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":170,"h":170}
 },
 {
-	"filename": "building.jpg",
+	"filename": "sprites/building.jpg",
 	"frame": {"x":170,"y":0,"w":46,"h":47},
 	"rotated": false,
 	"trimmed": false,
@@ -17,16 +17,144 @@
 	"sourceSize": {"w":46,"h":47}
 },
 {
-	"filename": "Tire.png",
-	"frame": {"x":216,"y":0,"w":6,"h":12},
+	"filename": "sprites/explosion/tile000.png",
+	"frame": {"x":0,"y":170,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile001.png",
+	"frame": {"x":64,"y":170,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile002.png",
+	"frame": {"x":128,"y":170,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile003.png",
+	"frame": {"x":192,"y":170,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile004.png",
+	"frame": {"x":0,"y":234,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile005.png",
+	"frame": {"x":64,"y":234,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile006.png",
+	"frame": {"x":128,"y":234,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile007.png",
+	"frame": {"x":192,"y":234,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile008.png",
+	"frame": {"x":0,"y":298,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile009.png",
+	"frame": {"x":64,"y":298,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile010.png",
+	"frame": {"x":128,"y":298,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile011.png",
+	"frame": {"x":192,"y":298,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile012.png",
+	"frame": {"x":0,"y":362,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile013.png",
+	"frame": {"x":64,"y":362,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile014.png",
+	"frame": {"x":128,"y":362,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/explosion/tile015.png",
+	"frame": {"x":192,"y":362,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "sprites/Tire.png",
+	"frame": {"x":0,"y":426,"w":6,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":6,"h":12},
 	"sourceSize": {"w":6,"h":12}
 },
 {
-	"filename": "Truck.png",
-	"frame": {"x":222,"y":0,"w":32,"h":75},
+	"filename": "sprites/Truck.png",
+	"frame": {"x":6,"y":426,"w":32,"h":75},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":75},
@@ -37,8 +165,8 @@
 	"version": "1.0",
 	"image": "car.png",
 	"format": "RGBA8888",
-	"size": {"w":256,"h":256},
+	"size": {"w":256,"h":512},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:06876c103fd61ece731998fa6f4d93eb:8fbd9b8c399b101b0a4581553a237655:0cc8a77b70c78c003d18a01f226c6fa5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d29d506b88f4d8aedcc5e6e5b76ee9ac:e1264157c32736ffe9175997187076dc:0cc8a77b70c78c003d18a01f226c6fa5$"
 }
 }

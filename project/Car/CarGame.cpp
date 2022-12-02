@@ -127,7 +127,6 @@ void CarGame::init()
         {
             glm::vec2 position = {offset + (i * buildingDistance), offset + (j * buildingDistance)};
             spawnBuilding(position);
-            std::cout << position.x << " " << position.y << std::endl;
         }
     }
     spawnEnemy();
