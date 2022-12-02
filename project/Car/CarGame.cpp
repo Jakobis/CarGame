@@ -89,8 +89,15 @@ void CarGame::init()
         2048 // int buffer size (controls the latency, 2048 good default)
     );
     Mix_Music* music = Mix_LoadMUS("./assets/music.mp3");
-    Mix_PlayMusic(music, -1);
+    //Mix_PlayMusic(music, -1);
 
+    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
+    // Plays an SFX on the desired SFX channel
+    Mix_PlayChannel(
+    -1, // int channel to play on (-1 is first available)
+    my_sound, // Mix_Chunk* chunk to play
+    0 // int number loops
+    );
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
     explosionSprites = std::vector<sre::Sprite>();
@@ -231,6 +238,13 @@ void CarGame::spawnExplosion(glm::vec2 position) {
     sac->setSprites(explosionSprites);
     sac->setAnimationTime(0.1);
     sac->setRepeating(false);
+    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
+    // Plays an SFX on the desired SFX channel
+    Mix_PlayChannel(
+    -1, // int channel to play on (-1 is first available)
+    my_sound, // Mix_Chunk* chunk to play
+    0 // int number loops
+    );
 }
 
 void CarGame::render()
