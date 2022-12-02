@@ -116,21 +116,26 @@ void CarGame::init()
 
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 
+    
+    spawnBuilding({1000, 1000});
+    spawnBuilding({1000, 2000});
+    spawnEnemy();
+}
+
+void CarGame::spawnBuilding(glm::vec2 position) 
+{
     auto buildingObj = createGameObject();
     buildingObj->name = "Building";
     auto buildingSpriteComponent = buildingObj->addComponent<SpriteComponent>();
     auto buildingSprite = spriteAtlas->get("building.jpg");
-    float buildingScale = 10;
+    float buildingScale = 8;
     buildingSprite.setScale({buildingScale*2, buildingScale*2});
-    glm::vec2 position(1000, 1000);
     buildingObj->setPosition(position);
     buildingSpriteComponent->setSprite(buildingSprite);
     auto buildingPhys = buildingObj->addComponent<PhysicsComponent>();
     glm::vec2 size = buildingSprite.getSpriteSize();
     float physicsScale = 10;
     buildingPhys->initBox(b2_staticBody, size * buildingScale / physicsScale, position / physicsScale, 5);
-    
-    spawnEnemy();
 }
 
 void CarGame::spawnEnemy(glm::vec2 position)
