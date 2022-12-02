@@ -17,4 +17,5 @@ private:
     float maxHealth = 200;
     float health = maxHealth;
     float damageSpeedThreshold = 100;
+    friend class CarGame;
 };

@@ -1,44 +1,115 @@
-{"frames": [
-
 {
-	"filename": "asphalt.png",
-	"frame": {"x":0,"y":0,"w":170,"h":170},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},
-	"sourceSize": {"w":170,"h":170}
-},
-{
-	"filename": "building.jpg",
-	"frame": {"x":170,"y":0,"w":46,"h":47},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":47},
-	"sourceSize": {"w":46,"h":47}
-},
-{
-	"filename": "Tire.png",
-	"frame": {"x":216,"y":0,"w":6,"h":12},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":6,"h":12},
-	"sourceSize": {"w":6,"h":12}
-},
-{
-	"filename": "Truck.png",
-	"frame": {"x":222,"y":0,"w":32,"h":75},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":75},
-	"sourceSize": {"w":32,"h":75}
-}],
-"meta": {
-	"app": "https://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "car.png",
-	"format": "RGBA8888",
-	"size": {"w":256,"h":256},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:06876c103fd61ece731998fa6f4d93eb:8fbd9b8c399b101b0a4581553a237655:0cc8a77b70c78c003d18a01f226c6fa5$"
-}
+  "frames": [
+    {
+      "filename": "asphalt.png",
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 170,
+        "h": 170
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 170,
+        "h": 170
+      },
+      "sourceSize": {
+        "w": 170,
+        "h": 170
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "Truck.png",
+      "frame": {
+        "x": 173,
+        "y": 1,
+        "w": 32,
+        "h": 75
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 75
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "building.jpg",
+      "frame": {
+        "x": 173,
+        "y": 78,
+        "w": 46,
+        "h": 47
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 46,
+        "h": 47
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 47
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "Tire.png",
+      "frame": {
+        "x": 207,
+        "y": 1,
+        "w": 6,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 6,
+        "h": 12
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "car.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 256,
+      "h": 256
+    },
+    "scale": 1
+  }
 }

@@ -32,9 +32,6 @@ CarGame::CarGame()
     ImGuiIO &io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Roboto-Medium.ttf", 36.0f);
 
-    // set imgui font size
-    io.FontGlobalScale = 1.0f;
-
     ImGuiStyle &style = ImGui::GetStyle();
     style.Alpha = 1;
     style.Colors[ImGuiCol_WindowBg] = ImVec4(0, 0, 0, 0);
@@ -197,6 +194,20 @@ void CarGame::render()
     for (auto &go : sceneObjects)
     {
         go->renderSprite(spriteBatchBuilder);
+        if (camera->isInView(go->position))
+        {
+            auto killable = go->getComponent<KillableComponent>();
+            if (killable != nullptr)
+            {
+                auto pos = camera->getScreenPosition(go->position);
+                ImGui::SetNextWindowPos(ImVec2(pos.x - 50, pos.y - 40), ImGuiCond_Always);
+                ImGui::SetNextWindowSize(ImVec2(100, 10), ImGuiCond_Always);
+                ImGui::Begin("x", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+                ImGui::SetWindowFontScale(0.05);
+                ImGui::ProgressBar(killable->health / killable->maxHealth, ImVec2(-1, 0));
+                ImGui::End();
+            }
+        }
     }
 
     if (gameState == GameState::Ready)
@@ -222,11 +233,11 @@ void CarGame::render()
         debugDraw.clear();
     }
 
-    ImGui::SetNextWindowPos(ImVec2(0, .0f), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(600, 60), ImGuiSetCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(0, .0f), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(600, 60), ImGuiCond_Always);
     ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     auto car = carObj->getComponent<Car>();
-    ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string(car->health).data());
+    ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string((int)ceil(car->health)).data());
     ImGui::End();
 }
 
