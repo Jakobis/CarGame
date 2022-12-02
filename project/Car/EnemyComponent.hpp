@@ -13,7 +13,7 @@ public:
 
     void update(float deltaTime) override;
 
-    void init(std::shared_ptr<GameObject> player);
+    void init(std::shared_ptr<GameObject> player, glm::vec2 position);
 
 private:
     std::shared_ptr<GameObject> player;

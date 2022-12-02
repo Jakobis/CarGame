@@ -10,8 +10,9 @@
 #include "Car.hpp"
 #include "EnemyComponent.hpp"
 #include "KillableComponent.hpp"
+#include <random>
+#include "glm/gtc/matrix_transform.hpp"
 
-using namespace std;
 using namespace sre;
 
 const glm::vec2 CarGame::windowSize(1200, 800);
@@ -26,6 +27,10 @@ CarGame::CarGame()
     r.init()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+
+    std::random_device rd;
+    gen = std::mt19937(rd());
+    ran = std::uniform_real_distribution<double>(0, 1);
 
     init();
 
@@ -64,13 +69,13 @@ void CarGame::init()
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
 
-    auto carObj = createGameObject();
+    carObj = createGameObject();
     carObj->name = carName;
     camera->setFollowObject(carObj, {0, 0});
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
     sprite.setScale({2, 2});
-    carObj->setPosition({-100, 200});
+    carObj->setPosition({0, 0});
     so->setSprite(sprite);
 
     auto carComp = carObj->addComponent<Car>();
@@ -110,21 +115,38 @@ void CarGame::init()
     float physicsScale = 10;
     buildingPhys->initBox(b2_staticBody, size * buildingScale / physicsScale, position / physicsScale, 5);
     
+    spawnEnemy();
+}
+
+void CarGame::spawnEnemy(glm::vec2 position)
+{
+    if (position == glm::vec2(0, 0))
+    {
+        float distance = 300;
+        auto angle = ran(gen) * M_PI * 2;
+        position = carObj->getPosition() + (distance * glm::vec2(glm::sin(angle), glm::cos(angle)));
+    }
 
     auto enemyObj = createGameObject();
     enemyObj->name = "Enemy";
     auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
     auto enemySprite = spriteAtlas->get("Truck.png");
     enemySprite.setScale({2, 2});
-    enemyObj->setPosition({400, 200});
     enemySpriteComponent->setSprite(enemySprite);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
-    enemyComp->init(carObj);
+    enemyObj->setPosition(position);
+    enemyComp->init(carObj, position);
     enemyObj->addComponent<KillableComponent>();
 }
 
 void CarGame::update(float time)
 {
+    worldTime += time;
+    if (worldTime > 5)
+    {
+        worldTime = fmod(worldTime, 5);
+        spawnEnemy();
+    }
     if (gameState == GameState::Running)
     {
         updatePhysics();
@@ -183,6 +205,19 @@ void CarGame::render()
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
         // rp.drawLines({{0, 0, 0}, {1000, 1000, 0}}, {1, 0, 0, 1});
+        auto material = Shader::getUnlit()->createMaterial();
+        auto mesh = Mesh::create()
+                        .withCube()
+                        // .withPositions({{0, 0, 0}, {100, 100, 0}, {100, 0, 0}, {100, 100, 0}})
+                        // .withMeshTopology(MeshTopology::Lines)
+                        .build();
+
+        // update material
+        material->setColor({1, 0, 0, 1});
+        glm::mat4 transform(1);
+        transform = glm::translate(transform, glm::vec3(camera->getGameObject()->getPosition(), 0));
+        transform = glm::scale(transform, {300, 20, 0.1});
+        rp.draw(mesh, transform, material);
         debugDraw.clear();
     }
 }
@@ -237,7 +272,7 @@ void CarGame::onKey(SDL_Event &event)
 
 std::shared_ptr<GameObject> CarGame::createGameObject()
 {
-    auto obj = shared_ptr<GameObject>(new GameObject());
+    auto obj = std::shared_ptr<GameObject>(new GameObject());
     sceneObjects.push_back(obj);
     return obj;
 }
