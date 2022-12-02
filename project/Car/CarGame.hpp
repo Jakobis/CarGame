@@ -62,6 +62,8 @@ private:
 
     void updatePhysics();
     b2World *world = nullptr;
+    float worldTime = 0;
+    int progress = 0;
     const float physicsScale = 10;
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);

@@ -11,6 +11,7 @@
 #include "EnemyComponent.hpp"
 #include "KillableComponent.hpp"
 #include <random>
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace sre;
 
@@ -74,7 +75,7 @@ void CarGame::init()
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
     sprite.setScale({2, 2});
-    carObj->setPosition({-100, 200});
+    carObj->setPosition({0, 0});
     so->setSprite(sprite);
 
     auto carComp = carObj->addComponent<Car>();
@@ -101,9 +102,6 @@ void CarGame::init()
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 
     spawnEnemy();
-    spawnEnemy();
-    spawnEnemy();
-    spawnEnemy();
 }
 
 void CarGame::spawnEnemy(glm::vec2 position)
@@ -129,6 +127,12 @@ void CarGame::spawnEnemy(glm::vec2 position)
 
 void CarGame::update(float time)
 {
+    worldTime += time;
+    if (worldTime > 5)
+    {
+        worldTime = fmod(worldTime, 5);
+        spawnEnemy();
+    }
     if (gameState == GameState::Running)
     {
         updatePhysics();
@@ -187,6 +191,19 @@ void CarGame::render()
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
         // rp.drawLines({{0, 0, 0}, {1000, 1000, 0}}, {1, 0, 0, 1});
+        auto material = Shader::getUnlit()->createMaterial();
+        auto mesh = Mesh::create()
+                        .withCube()
+                        // .withPositions({{0, 0, 0}, {100, 100, 0}, {100, 0, 0}, {100, 100, 0}})
+                        // .withMeshTopology(MeshTopology::Lines)
+                        .build();
+
+        // update material
+        material->setColor({1, 0, 0, 1});
+        glm::mat4 transform(1);
+        transform = glm::translate(transform, glm::vec3(camera->getGameObject()->getPosition(), 0));
+        transform = glm::scale(transform, {300, 20, 0.1});
+        rp.draw(mesh, transform, material);
         debugDraw.clear();
     }
 }

@@ -14,7 +14,7 @@ public:
     void update(float deltaTime) override;
 
 private:
-    float health = 200;
     float maxHealth = 200;
+    float health = maxHealth;
     float damageSpeedThreshold = 100;
 };
