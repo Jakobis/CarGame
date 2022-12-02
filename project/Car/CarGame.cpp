@@ -80,21 +80,13 @@ void CarGame::init()
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
     Mix_OpenAudio(
-        22050, // int frequency
+        22050,              // int frequency
         MIX_DEFAULT_FORMAT, // Uint16 format
-        2, // int channels
-        2048 // int buffer size (controls the latency, 2048 good default)
+        2,                  // int channels
+        2048                // int buffer size (controls the latency, 2048 good default)
     );
-    Mix_Music* music = Mix_LoadMUS("./assets/music.mp3");
-    //Mix_PlayMusic(music, -1);
-
-    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
-    // Plays an SFX on the desired SFX channel
-    Mix_PlayChannel(
-    -1, // int channel to play on (-1 is first available)
-    my_sound, // Mix_Chunk* chunk to play
-    0 // int number loops
-    );
+    Mix_Music *music = Mix_LoadMUS("./assets/music.mp3");
+    Mix_PlayMusic(music, -1);
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
     explosionSprites = std::vector<sre::Sprite>();
@@ -102,10 +94,9 @@ void CarGame::init()
     {
         auto name = "explosion/tile0" + std::to_string(i) + ".png";
         auto sprite = spriteAtlas->get(name);
-        sprite.setScale({2,2});
+        sprite.setScale({2, 2});
         explosionSprites.push_back(sprite);
     }
-    
 
     carObj = createGameObject();
     carObj->name = carName;
@@ -139,7 +130,6 @@ void CarGame::init()
 
     backgroundComponent.init(spriteAtlas->get("asphalt.png"));
 
-    
     int buildingAmount = 10;
     int buildingDistance = 2000;
     int offset = (-buildingAmount / 2) * buildingDistance;
@@ -155,14 +145,14 @@ void CarGame::init()
     spawnEnemy();
 }
 
-void CarGame::spawnBuilding(glm::vec2 position) 
+void CarGame::spawnBuilding(glm::vec2 position)
 {
     auto buildingObj = createGameObject();
     buildingObj->name = "Building";
     auto buildingSpriteComponent = buildingObj->addComponent<SpriteComponent>();
     auto buildingSprite = spriteAtlas->get("building.jpg");
     float buildingScale = 8;
-    buildingSprite.setScale({buildingScale*2, buildingScale*2});
+    buildingSprite.setScale({buildingScale * 2, buildingScale * 2});
     buildingObj->setPosition(position);
     buildingSpriteComponent->setSprite(buildingSprite);
     auto buildingPhys = buildingObj->addComponent<PhysicsComponent>();
@@ -199,7 +189,6 @@ void CarGame::update(float time)
     {
         worldTime = fmod(worldTime, 5);
         spawnEnemy();
-        
     }
     if (gameState == GameState::Running)
     {
@@ -208,7 +197,8 @@ void CarGame::update(float time)
     for (int i = 0; i < sceneObjects.size(); i++)
     {
         sceneObjects[i]->update(time);
-        if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr) {
+        if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
+        {
             spawnExplosion(sceneObjects[i]->getPosition());
         }
     }
@@ -226,7 +216,8 @@ void CarGame::update(float time)
     sceneObjects.erase(it, sceneObjects.end());
 }
 
-void CarGame::spawnExplosion(glm::vec2 position) {
+void CarGame::spawnExplosion(glm::vec2 position)
+{
     auto obj = createGameObject();
     obj->setPosition(position);
     auto sc = obj->addComponent<SpriteComponent>();
@@ -235,12 +226,12 @@ void CarGame::spawnExplosion(glm::vec2 position) {
     sac->setSprites(explosionSprites);
     sac->setAnimationTime(0.1);
     sac->setRepeating(false);
-    Mix_Chunk* my_sound = Mix_LoadWAV("./assets/explosion.wav" );
+    Mix_Chunk *my_sound = Mix_LoadWAV("./assets/explosion.wav");
     // Plays an SFX on the desired SFX channel
     Mix_PlayChannel(
-    -1, // int channel to play on (-1 is first available)
-    my_sound, // Mix_Chunk* chunk to play
-    0 // int number loops
+        -1,       // int channel to play on (-1 is first available)
+        my_sound, // Mix_Chunk* chunk to play
+        0         // int number loops
     );
 }
 
@@ -254,6 +245,7 @@ void CarGame::render()
     backgroundComponent.renderBackground(rp, pos.x, pos.y);
 
     auto spriteBatchBuilder = SpriteBatch::create();
+    int healthCount = 0;
     for (auto &go : sceneObjects)
     {
         go->renderSprite(spriteBatchBuilder);
@@ -265,7 +257,7 @@ void CarGame::render()
                 auto pos = camera->getScreenPosition(go->position);
                 ImGui::SetNextWindowPos(ImVec2(pos.x - 50, pos.y - 40), ImGuiCond_Always);
                 ImGui::SetNextWindowSize(ImVec2(100, 10), ImGuiCond_Always);
-                ImGui::Begin("x", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+                ImGui::Begin(("health" + std::to_string(healthCount++)).data(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
                 ImGui::SetWindowFontScale(0.05);
                 ImGui::ProgressBar(killable->health / killable->maxHealth, ImVec2(-1, 0));
                 ImGui::End();
