@@ -101,7 +101,7 @@ void CarGame::init()
     auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
     auto enemySprite = spriteAtlas->get("Truck.png");
     enemySprite.setScale({2, 2});
-    enemyObj->setPosition({200, 200});
+    enemyObj->setPosition({400, 200});
     enemySpriteComponent->setSprite(enemySprite);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
     enemyComp->init(carObj);
@@ -118,6 +118,18 @@ void CarGame::update(float time)
     {
         sceneObjects[i]->update(time);
     }
+    // remove_if from <algorithm> moves elements to the end of the vector...
+    auto it = std::remove_if(
+        sceneObjects.begin(),
+        sceneObjects.end(),
+        [](const std::shared_ptr<GameObject> &obj)
+        {
+            return obj->shouldRemove;
+        });
+
+    // ...so that we may remove them in O(n)
+
+    sceneObjects.erase(it, sceneObjects.end());
 }
 
 void CarGame::render()

@@ -158,7 +158,7 @@ b2Joint *PhysicsComponent::initJoint(std::shared_ptr<PhysicsComponent> other, b2
     jointDef->bodyA = this->body;
     jointDef->bodyB = other->body;
     other->joint = world->CreateJoint(jointDef);
-    return other->joint;
+    return other->joint; // We assign the joint to the "other"
 }
 
 bool PhysicsComponent::isSensor()

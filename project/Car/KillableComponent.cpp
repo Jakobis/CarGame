@@ -15,23 +15,22 @@
 KillableComponent::KillableComponent(GameObject *gameObject) : Component(gameObject)
 {
     this->gameObject = gameObject;
-
 }
-
 
 void KillableComponent::onCollisionStart(PhysicsComponent *comp)
 {
-    auto collisionspeed = glm::length(comp->getLinearImpulse() - gameObject->getComponent<PhysicsComponent>()->getLinearImpulse()) / 1000; //the 1000 is to have more managable numbers
+    auto collisionspeed = glm::length(comp->getLinearImpulse() - gameObject->getComponent<PhysicsComponent>()->getLinearImpulse()) / 1000; // the 1000 is to have more managable numbers
     std::cout << "Enemy collided with something with speed: " << collisionspeed << std::endl;
-    if (collisionspeed >= damageSpeedThreshold) {
+    if (collisionspeed >= damageSpeedThreshold)
+    {
         health -= collisionspeed;
         std::cout << "Enemy crashed" << std::endl;
-        if (health <= 0) {
-            shouldDelete = true;
+        if (health <= 0)
+        {
+            gameObject->remove();
             std::cout << "Enemy has died" << std::endl;
         }
     }
-
 }
 
 void KillableComponent::onCollisionEnd(PhysicsComponent *comp)

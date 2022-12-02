@@ -36,12 +36,16 @@ public:
 
     std::string name = "_";
 
+    void remove();
+
 private:
     GameObject() = default;
     std::vector<std::shared_ptr<Component>> components;
 
     glm::vec2 position;
     float rotation;
+
+    bool shouldRemove = false;
 
     friend class CarGame;
 };

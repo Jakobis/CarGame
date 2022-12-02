@@ -49,3 +49,7 @@ void GameObject::update(float deltaTime) {
 const std::vector<std::shared_ptr<Component>> &GameObject::getComponents() {
     return components;
 }
+
+void GameObject::remove() {
+    shouldRemove = true;
+}

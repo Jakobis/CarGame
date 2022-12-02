@@ -16,13 +16,12 @@ EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
     this->gameObject = gameObject;
     auto phys = gameObject->addComponent<PhysicsComponent>();
     glm::vec2 size(30 / 10, 80 / 10);
-    phys->initBox(b2_dynamicBody, size, {size.x/2, size.y / 2}, 5);
+    phys->initBox(b2_dynamicBody, size, {size.x / 2, size.y / 2}, 5);
 }
-
 
 void EnemyComponent::onCollisionStart(PhysicsComponent *comp)
 {
-    //std::cout << "Enemy collided with something" << std::endl;
+    // std::cout << "Enemy collided with something" << std::endl;
 }
 
 void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
@@ -34,10 +33,9 @@ void EnemyComponent::update(float deltaTime)
     auto phys = gameObject->getComponent<PhysicsComponent>();
     auto desiredPosition = player->getPosition();
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);
-
 }
 
-void EnemyComponent::init(std::shared_ptr<GameObject> player) 
+void EnemyComponent::init(std::shared_ptr<GameObject> player)
 {
     this->player = player;
 }
