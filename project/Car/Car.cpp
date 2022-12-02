@@ -11,7 +11,7 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     auto s = gameObject->addComponent<SpriteComponent>();
     s->setSprite(*sprite);
     phys = gameObject->addComponent<PhysicsComponent>();
-    phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {5 / 10, 10 / 10}, 1);
+    phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {0, 0}, 1);
     phys->setSensor(true);
     currentTraction = 0.5;
     dragRatio = 0.5;
@@ -92,7 +92,7 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
     this->gameObject = gameObject;
     phys = gameObject->addComponent<PhysicsComponent>();
     glm::vec2 size(30 / 10, 80 / 10);
-    phys->initBox(b2_dynamicBody, size, {15 / 10, 40 / 10}, 10);
+    phys->initBox(b2_dynamicBody, size, {0, 0}, 10);
     phys->setAngularDamping(1);
 }
 
@@ -201,10 +201,11 @@ bool Car::onKey(SDL_Event &event)
     return true;
 }
 
-float angleBetweenInDegrees(glm::vec2 a, glm::vec2 b) {
- auto da = glm::normalize(a);
- auto db = glm::normalize(b);
- return glm::acos(glm::dot(da, db)) * 180 / M_PI;
+float angleBetweenInDegrees(glm::vec2 a, glm::vec2 b)
+{
+    auto da = glm::normalize(a);
+    auto db = glm::normalize(b);
+    return glm::acos(glm::dot(da, db)) * 180 / M_PI;
 }
 
 void Car::onCollisionStart(PhysicsComponent *comp)
@@ -212,17 +213,19 @@ void Car::onCollisionStart(PhysicsComponent *comp)
     auto phys = gameObject->getComponent<PhysicsComponent>();
     auto vector2Enemy = comp->getGameObject()->getPosition() - gameObject->getPosition();
     auto collisionAngle = angleBetweenInDegrees(vector2Enemy, phys->getDirectionVector());
-    auto collisionspeed = glm::length(comp->getLinearImpulse() - phys->getLinearImpulse()) / 1000; //the 1000 is to have more managable numbers
-    if (collisionspeed >= damageSpeedThreshold) {
-        if (collisionAngle <= safeangle) {
+    auto collisionspeed = glm::length(comp->getLinearImpulse() - phys->getLinearImpulse()) / 1000; // the 1000 is to have more managable numbers
+    if (collisionspeed >= damageSpeedThreshold)
+    {
+        if (collisionAngle <= safeangle)
+        {
             std::cout << "Car is safe" << std::endl;
             return;
         }
         health -= collisionspeed;
         std::cout << "Car crashed" << std::endl;
-        if (health <= 0) {
+        if (health <= 0)
+        {
             std::cout << "Car has died" << std::endl;
         }
     }
-
 }

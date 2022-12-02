@@ -6,6 +6,7 @@
 #include "SideScrollingCamera.hpp"
 #include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
+#include <random>
 
 class PhysicsComponent;
 
@@ -47,8 +48,14 @@ private:
 
     void handleContact(b2Contact *contact, bool begin);
 
+    void spawnEnemy(glm::vec2 position = glm::vec2(0, 0));
+
     std::shared_ptr<SideScrollingCamera> camera;
+    std::shared_ptr<GameObject> carObj;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
+
+    std::uniform_real_distribution<double> ran;
+    std::mt19937 gen;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
     BackgroundComponent backgroundComponent;
