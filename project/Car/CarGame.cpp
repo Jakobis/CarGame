@@ -12,6 +12,7 @@
 #include "KillableComponent.hpp"
 #include <random>
 #include "glm/gtc/matrix_transform.hpp"
+#include "SDL_mixer.h"
 
 using namespace sre;
 
@@ -81,6 +82,15 @@ void CarGame::init()
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
+    Mix_OpenAudio(
+        22050, // int frequency
+        MIX_DEFAULT_FORMAT, // Uint16 format
+        2, // int channels
+        2048 // int buffer size (controls the latency, 2048 good default)
+    );
+    Mix_Music* music = Mix_LoadMUS("./assets/music.mp3");
+    Mix_PlayMusic(music, -1);
+
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
     explosionSprites = std::vector<sre::Sprite>();
@@ -185,6 +195,7 @@ void CarGame::update(float time)
     {
         worldTime = fmod(worldTime, 5);
         spawnEnemy();
+        
     }
     if (gameState == GameState::Running)
     {
