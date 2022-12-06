@@ -49,7 +49,7 @@ private:
     b2RevoluteJoint *flJoint;
     b2RevoluteJoint *frJoint;
     char control = 0;
-    float safeangle = 30;
+    float safeangle = 90;
     float maxHealth = 1000;
     float health = maxHealth;
     float damageSpeedThreshold = 100;
