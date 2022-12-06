@@ -1,8 +1,14 @@
-- jakob har lavet "hvad fart kolliderer vi med?"
-- Ting der bare eksisterer vs aktive agenter
-
-- Skade
-- AI behaviour
-- Background + terrain (bygninger man kan crashe ind i)
-- Spawne fjender og neutral entities
--
+Ting vi skal have
+- crashlyde + andet der indikerer at man gør skade på fjender 
+- score counter
+- Mindre slidy bil
+- En anden sprite til fjender
+- Player death
+Ting vi bør have
+- Bedre ai til fjender
+- random NPC movement
+- Tilfældighed i bygningers placering
+- Powerups
+Ting der kunne være nice
+- upgrades (bombing run kunne være vildt sejt)
+- En eller anden boss der spawner efter x kills
