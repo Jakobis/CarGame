@@ -182,6 +182,28 @@ void CarGame::spawnEnemy(glm::vec2 position)
     enemyObj->addComponent<KillableComponent>();
 }
 
+void CarGame::spawnNPC(glm::vec2 position)
+{
+    if (position == glm::vec2(0, 0))
+    {
+        float distance = 30;
+        auto angle = ran(gen) * M_PI * 2;
+        position = carObj->getPosition() + (distance * glm::vec2(glm::sin(angle), glm::cos(angle)));
+    }
+
+    auto NPCObj = createGameObject();
+    NPCObj->name = "NPC";
+    auto NPCSpriteComponent = NPCObj->addComponent<SpriteComponent>();
+    auto NPCSprite = spriteAtlas->get("man.png");
+    NPCSprite.setScale({2, 2});
+    NPCSpriteComponent->setSprite(NPCSprite);
+    NPCObj->setPosition(position);
+    NPCObj->addComponent<KillableComponent>();
+    auto phys = NPCObj->addComponent<PhysicsComponent>();
+    phys->initCircle(b2_dynamicBody, 30/10, position, 5);
+}
+
+
 void CarGame::update(float time)
 {
     worldTime += time;
@@ -189,6 +211,7 @@ void CarGame::update(float time)
     {
         worldTime = fmod(worldTime, 5);
         spawnEnemy();
+        spawnNPC();
     }
     if (gameState == GameState::Running)
     {
