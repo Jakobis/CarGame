@@ -57,6 +57,7 @@ private:
     std::shared_ptr<GameObject> carObj;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
     std::vector<sre::Sprite> explosionSprites;
+    std::vector<sre::Sprite> enemySprites;
 
     std::uniform_real_distribution<double> ran;
     std::mt19937 gen;

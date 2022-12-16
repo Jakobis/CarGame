@@ -97,6 +97,14 @@ void CarGame::init()
         sprite.setScale({2, 2});
         explosionSprites.push_back(sprite);
     }
+    enemySprites = std::vector<sre::Sprite>();
+    enemySprites.push_back(spriteAtlas->get("enemy1.png"));
+    enemySprites.push_back(spriteAtlas->get("enemy2.png"));
+    for (int i = 0; i < 2; i++)
+    {
+        enemySprites.at(i).setScale({2,2});
+    }
+    
 
     carObj = createGameObject();
     carObj->name = carName;
@@ -173,9 +181,10 @@ void CarGame::spawnEnemy(glm::vec2 position)
     auto enemyObj = createGameObject();
     enemyObj->name = "Enemy";
     auto enemySpriteComponent = enemyObj->addComponent<SpriteComponent>();
-    auto enemySprite = spriteAtlas->get("Truck.png");
-    enemySprite.setScale({2, 2});
-    enemySpriteComponent->setSprite(enemySprite);
+    enemySpriteComponent->setSprite(enemySprites.at(0));
+    auto sac = enemyObj->addComponent<SpriteAnimationComponent>();
+    sac->setSprites(enemySprites);
+    sac->setAnimationTime(0.5);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
     enemyObj->setPosition(position);
     enemyComp->init(carObj, position);
