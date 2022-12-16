@@ -132,7 +132,7 @@ void CarGame::init()
 
     int buildingAmount = 10;
     int buildingDistance = 2000;
-    int offset = (-buildingAmount / 2) * buildingDistance;
+    int offset = (-buildingAmount / 2) * buildingDistance + (buildingDistance / 2);
     int counter = 0;
     for (int i = 0; i < buildingAmount; i++)
     {

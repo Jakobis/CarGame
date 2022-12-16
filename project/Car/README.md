@@ -1,7 +1,6 @@
 Ting vi skal have
 - crashlyde + andet der indikerer at man gør skade på fjender 
-- score counter
-- Mindre slidy bil
+- Mindre slidy bil (bedre nu, kan sikkert gøres endnu bedre)
 - En anden sprite til fjender
 - Player death
 Ting vi bør have
