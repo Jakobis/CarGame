@@ -12,10 +12,13 @@ public:
     void onCollisionEnd(PhysicsComponent *comp) override;
 
     void update(float deltaTime) override;
+    
+    int getPointValue();
 
 private:
-    float maxHealth = 100;
+    float maxHealth = 200;
     float health = maxHealth;
-    float damageSpeedThreshold = 100;
+    float damageSpeedThreshold = 50;
     friend class CarGame;
+    int pointValue = 1;
 };

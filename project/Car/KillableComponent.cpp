@@ -40,3 +40,7 @@ void KillableComponent::onCollisionEnd(PhysicsComponent *comp)
 void KillableComponent::update(float deltaTime)
 {
 }
+
+int KillableComponent::getPointValue() {
+    return pointValue;
+}
