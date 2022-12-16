@@ -13,8 +13,8 @@ Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
     phys = gameObject->addComponent<PhysicsComponent>();
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {0, 0}, 1);
     phys->setSensor(true);
-    currentTraction = 0.5;
-    dragRatio = 0.5;
+    currentTraction = 1;
+    dragRatio = 0.25;
     currentEngineSpeed = 0;
 }
 
