@@ -207,9 +207,9 @@ void CarGame::spawnNPC(glm::vec2 position)
 void CarGame::update(float time)
 {
     worldTime += time;
-    if (worldTime > 5)
+    if (worldTime > 0)
     {
-        worldTime = fmod(worldTime, 5);
+        worldTime -= 1;
         spawnEnemy();
         spawnNPC();
     }
@@ -223,6 +223,10 @@ void CarGame::update(float time)
         if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
         {
             spawnExplosion(sceneObjects[i]->getPosition());
+            currentScore += sceneObjects[i]->getComponent<KillableComponent>()->getPointValue();
+            if (currentScore >= winningScore) {
+                std::cout << "you win" << std::endl;
+            }
         }
     }
     // remove_if from <algorithm> moves elements to the end of the vector...
@@ -287,7 +291,6 @@ void CarGame::render()
             }
         }
     }
-
     if (gameState == GameState::Ready)
     {
         // auto sprite = spriteAtlas->get("get-ready.png");
@@ -310,13 +313,22 @@ void CarGame::render()
         rp.drawLines(debugDraw.getLines());
         debugDraw.clear();
     }
-
-    ImGui::SetNextWindowPos(ImVec2(0, .0f), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(600, 60), ImGuiCond_Always);
-    ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
+    ImGui::SetNextWindowPos(ImVec2(0 * window.x, .0f * window.y), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(0.25 * window.x, 0.06* window.y), ImGuiCond_Always);
+    ImGui::Begin("Health Bar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     auto car = carObj->getComponent<Car>();
     ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string((int)ceil(car->health)).data());
     ImGui::End();
+
+    //score counter
+    auto size = ImVec2(0.25 * window.x, 0.06* window.y);
+    ImGui::SetNextWindowPos(ImVec2(0.5 * window.x - (size.x * 0.5), .0f * window.y), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(size, ImGuiCond_Always);
+    ImGui::Begin("Score", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::ProgressBar((float)currentScore / (float)winningScore, ImVec2(-1, 0), std::to_string(currentScore).data());
+    ImGui::End();
+
 }
 
 void CarGame::onKey(SDL_Event &event)
