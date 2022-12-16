@@ -200,9 +200,8 @@ void CarGame::spawnNPC(glm::vec2 position)
     NPCObj->setPosition(position);
     NPCObj->addComponent<KillableComponent>();
     auto phys = NPCObj->addComponent<PhysicsComponent>();
-    phys->initCircle(b2_dynamicBody, 30/10, position, 5);
+    phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
 }
-
 
 void CarGame::update(float time)
 {

@@ -10,11 +10,11 @@
 #include "glm/ext.hpp"
 
 // lua headers
-#include <sol/sol.hpp>
+// #include <sol/sol.hpp>
 
 using namespace sre;
 using namespace std;
-using namespace sol;
+// using namespace sol;
 
 // Captures debug information from Box2D as lines (polygon fill and color is discarded)
 class ScriptableSphereObject {
@@ -57,13 +57,13 @@ public:
         mat->setColor({1,0,0,1});
         auto sphere = Mesh::create().withSphere().build();
 
-        lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
+        // lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
 
         // callback set title
-        lua.set_function("setTitle", [&](sol::this_state, sol::variadic_args va){
-            string s = va[0];
-            r.setWindowTitle(s);
-        });
+        // lua.set_function("setTitle", [&](sol::this_state, sol::variadic_args va){
+        //     string s = va[0];
+        //     r.setWindowTitle(s);
+        // });
 
 
         updateLuaScript();
@@ -89,9 +89,9 @@ public:
     }
 
     void updateLuaScript() {
-        lua.script(luaScript);                  // evaluate lua script
-        sol::function fn = lua["updatepos"];    // get lua function update pos
-        updatepos = fn;                         // get C++ functional reference to lua script
+        // lua.script(luaScript);                  // evaluate lua script
+        // sol::function fn = lua["updatepos"];    // get lua function update pos
+        // updatepos = fn;                         // get C++ functional reference to lua script
     }
 
     void update(float deltaTime){
@@ -132,7 +132,7 @@ private:
     SDLRenderer r;
     WorldLights l;
     Camera camera;
-    sol::state lua;
+    // sol::state lua;
     std::function<double(int, int, double)> updatepos;
 };
 

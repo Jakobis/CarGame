@@ -10,11 +10,11 @@
 #include "glm/ext.hpp"
 
 // lua headers
-#include <sol/sol.hpp>
+// #include <sol/sol.hpp>
 
 using namespace sre;
 using namespace std;
-using namespace sol;
+// using namespace sol;
 
 class LuaExample {
 public:
@@ -29,39 +29,39 @@ public:
         mat->setColor({1,0,0,1});
         mesh = Mesh::create().withSphere().build();
 
-        lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
+        // lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
 
         // Register callback functions
-        lua.set_function("pi", [&](sol::this_state state, sol::variadic_args va){
-            return glm::pi<double>();
-        });
-        lua.set_function("fmod", [&](sol::this_state state, sol::variadic_args va){
-            double numer = va[0];
-            double denum = va[1];
-            return fmod(numer,denum);
-        });
-        lua.set_function("remainder", [&](sol::this_state state, sol::variadic_args va){
-            double s = va[0];
-            double denum = va[1];
-            return remainder(s,denum);
-        });
-        lua.set_function("abs", [&](sol::this_state state, sol::variadic_args va){
-            double s = va[0];
-            return abs(s);
-        });
-        lua.set_function("sin", [&](sol::this_state state, sol::variadic_args va){
-            double s = va[0];
-            return sin(s);
-        });
-        lua.set_function("cos", [&](sol::this_state state, sol::variadic_args va){
-            double s = va[0];
-            return cos(s);
-        });
-        lua.set_function("pow", [&](sol::this_state state, sol::variadic_args va){
-            double s = va[0];
-            double p = va[1];
-            return pow(s,p);
-        });
+        // lua.set_function("pi", [&](sol::this_state state, sol::variadic_args va){
+        //     return glm::pi<double>();
+        // });
+        // lua.set_function("fmod", [&](sol::this_state state, sol::variadic_args va){
+        //     double numer = va[0];
+        //     double denum = va[1];
+        //     return fmod(numer,denum);
+        // });
+        // lua.set_function("remainder", [&](sol::this_state state, sol::variadic_args va){
+        //     double s = va[0];
+        //     double denum = va[1];
+        //     return remainder(s,denum);
+        // });
+        // lua.set_function("abs", [&](sol::this_state state, sol::variadic_args va){
+        //     double s = va[0];
+        //     return abs(s);
+        // });
+        // lua.set_function("sin", [&](sol::this_state state, sol::variadic_args va){
+        //     double s = va[0];
+        //     return sin(s);
+        // });
+        // lua.set_function("cos", [&](sol::this_state state, sol::variadic_args va){
+        //     double s = va[0];
+        //     return cos(s);
+        // });
+        // lua.set_function("pow", [&](sol::this_state state, sol::variadic_args va){
+        //     double s = va[0];
+        //     double p = va[1];
+        //     return pow(s,p);
+        // });
         updateLuaScript();
 
         // init objects
@@ -82,35 +82,35 @@ public:
     }
 
     void updateLuaScript() {
-        lua.script(luaScript);                  // evaluate lua script
-        sol::function fn = lua["easing"];    // get lua function update pos
-        updatepos = fn;                         // get C++ functional reference to lua script
+        // lua.script(luaScript);                  // evaluate lua script
+        // sol::function fn = lua["easing"];    // get lua function update pos
+        // updatepos = fn;                         // get C++ functional reference to lua script
     }
 
     void update(float deltaTime){
         static float totalTime = 0;
         totalTime += deltaTime;
-        try {
-            if (error.size()==0){
-                objPosition.y = (float) updatepos(totalTime);
-            }
-        } catch (sol::error err){
-            error = err.what();
-        }
+        // try {
+        //     if (error.size()==0){
+        //         objPosition.y = (float) updatepos(totalTime);
+        //     }
+        // } catch (sol::error err){
+        //     error = err.what();
+        // }
     }
 
     void render(){
-        try {
-            if (error.size()==0){
-                int i = 0;
-                for (float x = -5; x <= 5; x = x + 0.01f) {
-                    positions[i] = {x, (float) updatepos(x), 0};
-                    i++;
-                }
-            }
-        } catch (sol::error err){
-            error = err.what();
-        }
+        // try {
+        //     if (error.size()==0){
+        //         int i = 0;
+        //         for (float x = -5; x <= 5; x = x + 0.01f) {
+        //             positions[i] = {x, (float) updatepos(x), 0};
+        //             i++;
+        //         }
+        //     }
+        // } catch (sol::error err){
+        //     error = err.what();
+        // }
 
         RenderPass rp = RenderPass::create()
                 .withCamera(camera)
@@ -132,12 +132,12 @@ public:
             ImGui::LabelText("Error", error.c_str());
         }
         if (ImGui::Button("Update")){
-            try {
-                updateLuaScript();
-                error = "";
-            } catch (sol::error err){
-                error = err.what();
-            }
+            // try {
+            //     updateLuaScript();
+            //     error = "";
+            // } catch (sol::error err){
+            //     error = err.what();
+            // }
         }
     }
 private:
@@ -159,7 +159,7 @@ private:
     SDLRenderer r;
     Camera camera;
     std::string error;
-    sol::state lua;
+    // sol::state lua;
     std::function<double(double)> updatepos;
 };
 

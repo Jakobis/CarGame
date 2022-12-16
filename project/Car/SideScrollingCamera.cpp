@@ -13,7 +13,8 @@ using namespace glm;
 SideScrollingCamera::SideScrollingCamera(GameObject *gameObject)
     : Component(gameObject)
 {
-    camera.setOrthographicProjection(CarGame::windowSize.y, -1, 1);
+    cameraSize = sre::Renderer::instance->getWindowSize().y;
+    camera.setOrthographicProjection(cameraSize, -1, 1);
 }
 
 sre::Camera &SideScrollingCamera::getCamera()
@@ -27,6 +28,13 @@ void SideScrollingCamera::update(float deltaTime)
 
     position.x += offset.x;
     position.y += offset.y;
+
+    // Compromise for our sanity: Same zoom level for all screen sizes, bigger screen == bigger win
+    if (cameraSize != sre::Renderer::instance->getWindowSize().y)
+    {
+        cameraSize = sre::Renderer::instance->getWindowSize().y;
+        camera.setOrthographicProjection(cameraSize, -1, 1);
+    }
 
     // auto phys = followObject->getComponent<PhysicsComponent>();
     // if (phys != nullptr)
