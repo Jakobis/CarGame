@@ -23,4 +23,5 @@ private:
     sre::Camera camera;
     std::shared_ptr<GameObject> followObject;
     glm::vec2 offset;
+    float cameraSize;
 };
