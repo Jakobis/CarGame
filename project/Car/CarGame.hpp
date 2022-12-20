@@ -14,7 +14,8 @@ enum class GameState
 {
     Ready,
     Running,
-    GameOver
+    GameOver,
+    GameWon
 };
 
 class CarGame : public b2ContactListener
@@ -79,6 +80,6 @@ private:
     bool doDebugDraw = false;
     GameState gameState = GameState::Running;
     friend class PhysicsComponent;
-    int winningScore = 100;
+    int winningScore = 1;
     int currentScore = 0;
 };

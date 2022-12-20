@@ -254,8 +254,20 @@ void CarGame::update(float time)
             currentScore += sceneObjects[i]->getComponent<KillableComponent>()->getPointValue();
             if (currentScore >= winningScore) {
                 std::cout << "you win" << std::endl;
+                gameState = GameState::GameWon;
             }
         }
+    }
+    if (gameState == GameState::GameWon) 
+    {
+        for (int i = 0; i < sceneObjects.size(); i++)
+    {
+        if (sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
+        {
+            sceneObjects[i]->shouldRemove = true;
+            spawnExplosion(sceneObjects[i]->getPosition());
+        }
+    }
     }
     // remove_if from <algorithm> moves elements to the end of the vector...
     auto it = std::remove_if(
@@ -331,6 +343,12 @@ void CarGame::render()
         sprite.setPosition(pos);
         spriteBatchBuilder.addSprite(sprite);
     }
+    else if (gameState == GameState::GameWon)
+    {
+        auto sprite = spriteAtlas->get("youwin.png");
+        sprite.setPosition(pos);
+        spriteBatchBuilder.addSprite(sprite);
+    }
 
     auto sb = spriteBatchBuilder.build();
     rp.draw(sb);
@@ -393,7 +411,7 @@ void CarGame::onKey(SDL_Event &event)
             init();
             break;
         case SDLK_SPACE:
-            if (gameState == GameState::GameOver)
+            if (gameState == GameState::GameOver || gameState == GameState::GameWon)
             {
                 init();
                 gameState = GameState::Running;

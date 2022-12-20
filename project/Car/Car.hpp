@@ -50,7 +50,7 @@ private:
     b2RevoluteJoint *frJoint;
     char control = 0;
     float safeangle = 90;
-    float maxHealth = 1000;
+    float maxHealth = 1;
     float health = maxHealth;
     float damageSpeedThreshold = 100;
     friend class CarGame;

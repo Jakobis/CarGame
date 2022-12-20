@@ -233,6 +233,22 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">enemy1.png</key>
+            <key type="filename">enemy2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>24,24,48,48</rect>
+                <key>scale9Paddings</key>
+                <rect>24,24,48,48</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">explosion/tile00.png</key>
             <key type="filename">explosion/tile01.png</key>
             <key type="filename">explosion/tile010.png</key>
@@ -263,6 +279,21 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">game-over.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>150,75,300,151</rect>
+                <key>scale9Paddings</key>
+                <rect>150,75,300,151</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">man.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -275,6 +306,21 @@
                 <rect>20,63,39,125</rect>
                 <key>scale9Paddings</key>
                 <rect>20,63,39,125</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">youwin.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>270,270,540,540</rect>
+                <key>scale9Paddings</key>
+                <rect>270,270,540,540</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
