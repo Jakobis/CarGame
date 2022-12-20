@@ -153,7 +153,6 @@ void CarGame::init()
             spawnBuilding(position);
         }
     }
-    spawnEnemy();
 }
 
 void CarGame::spawnBuilding(glm::vec2 position)
@@ -216,7 +215,7 @@ void CarGame::spawnNPC(glm::vec2 position)
     phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
 }
 
-void CarGame::update(float time)
+void CarGame::handleSpawning(float time)
 {
     float baseSpawnTime = 5;
     enemySpawnTimer -= time;
@@ -236,9 +235,14 @@ void CarGame::update(float time)
         NPCSpawnTimer += baseSpawnTime;
         spawnNPC();
     }
+}
+
+void CarGame::update(float time)
+{
     if (gameState == GameState::Running)
     {
         updatePhysics();
+        handleSpawning(time);
     }
     for (int i = 0; i < sceneObjects.size(); i++)
     {
