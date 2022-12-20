@@ -67,7 +67,8 @@ private:
 
     void updatePhysics();
     b2World *world = nullptr;
-    float worldTime = 0;
+    float enemySpawnTimer = 0;
+    float NPCSpawnTimer = 0;
     int progress = 0;
     const float physicsScale = 10;
     void registerPhysicsComponent(PhysicsComponent *r);

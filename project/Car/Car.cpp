@@ -218,7 +218,6 @@ void Car::onCollisionStart(PhysicsComponent *comp)
     {
         if (collisionAngle <= safeangle)
         {
-            std::cout << "Car is safe" << std::endl;
             return;
         }
         health -= collisionspeed;
@@ -226,6 +225,7 @@ void Car::onCollisionStart(PhysicsComponent *comp)
         if (health <= 0)
         {
             std::cout << "Car has died" << std::endl;
+            endGame();
         }
     }
 }

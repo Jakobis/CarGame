@@ -41,6 +41,7 @@ public:
     void update(float deltaTime) override;
     bool onKey(SDL_Event &event) override;
     void onCollisionStart(PhysicsComponent *comp) override;
+    std::function<void()> endGame;
 
 private:
     GameObject *gameObject;

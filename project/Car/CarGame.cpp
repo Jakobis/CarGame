@@ -119,6 +119,9 @@ void CarGame::init()
     sprite = spriteAtlas->get("Tire.png");
     sprite.setScale({2, 2});
     carComp->initTires(&sprite);
+    carComp->endGame = [this]{
+            setGameState(GameState::GameOver);
+        };
 
     // Absolute hack -- Sort the car and tires by name, s.t. car is drawn over tires
     std::sort(
@@ -207,18 +210,30 @@ void CarGame::spawnNPC(glm::vec2 position)
     NPCSprite.setScale({2, 2});
     NPCSpriteComponent->setSprite(NPCSprite);
     NPCObj->setPosition(position);
-    NPCObj->addComponent<KillableComponent>();
+    auto kc = NPCObj->addComponent<KillableComponent>();
+    kc->damageSpeedThreshold = 0;
     auto phys = NPCObj->addComponent<PhysicsComponent>();
     phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
 }
 
 void CarGame::update(float time)
 {
-    worldTime += time;
-    if (worldTime > 0)
+    float baseSpawnTime = 5;
+    enemySpawnTimer -= time;
+    if (enemySpawnTimer <= 0)
     {
-        worldTime -= 1;
+        float denominator = winningScore - currentScore;
+        if (denominator < 1) {
+            denominator = 1;
+        }
+        float divisor = winningScore / baseSpawnTime;
+        enemySpawnTimer += denominator / divisor;
         spawnEnemy();
+    }
+    NPCSpawnTimer -= time;
+    if (NPCSpawnTimer <= 0) {
+
+        NPCSpawnTimer += baseSpawnTime;
         spawnNPC();
     }
     if (gameState == GameState::Running)
@@ -307,9 +322,9 @@ void CarGame::render()
     }
     else if (gameState == GameState::GameOver)
     {
-        // auto sprite = spriteAtlas->get("game-over.png");
-        // sprite.setPosition(pos);
-        // spriteBatchBuilder.addSprite(sprite);
+        auto sprite = spriteAtlas->get("game-over.png");
+        sprite.setPosition(pos);
+        spriteBatchBuilder.addSprite(sprite);
     }
 
     auto sb = spriteBatchBuilder.build();
