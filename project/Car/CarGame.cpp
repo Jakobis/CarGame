@@ -71,6 +71,7 @@ void CarGame::init()
         world->SetContactListener(nullptr);
     }
     camera.reset();
+    carObj = nullptr;
     sceneObjects.clear();
     camera.reset();
     physicsComponentLookup.clear();

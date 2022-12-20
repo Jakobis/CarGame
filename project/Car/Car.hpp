@@ -15,13 +15,12 @@ enum Control
 class Tire
 {
 public:
-    explicit Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite);
+    Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite);
     void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse);
     void updateFriction();
     void updateDrive(char control);
 
 private:
-    std::shared_ptr<GameObject> gameObject;
     std::shared_ptr<PhysicsComponent> phys;
     float maxForwardSpeed;
     float maxBackwardSpeed;

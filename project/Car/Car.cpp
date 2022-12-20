@@ -5,9 +5,8 @@
 #include <iostream>
 #include "math.h"
 
-Tire::Tire(std::shared_ptr<GameObject> gameObject, sre::Sprite *sprite)
+Tire::Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite)
 {
-    this->gameObject = gameObject;
     auto s = gameObject->addComponent<SpriteComponent>();
     s->setSprite(*sprite);
     phys = gameObject->addComponent<PhysicsComponent>();
@@ -112,31 +111,35 @@ void Car::initTires(sre::Sprite *tireSprite)
     jointDef.localAnchorB.SetZero(); // center of tire
 
     // back left tire
-    auto tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
+    auto tireGameObject = CarGame::instance->createGameObject();
+    auto tire = std::make_shared<Tire>(tireGameObject, tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(-3, -4);
-    phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // back right tire
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
+    tireGameObject = CarGame::instance->createGameObject();
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(3, -4);
-    phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front left
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
+    tireGameObject = CarGame::instance->createGameObject();
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(-3, 3);
-    flJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    flJoint = (b2RevoluteJoint *)phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front right
-    tire = std::make_shared<Tire>(CarGame::instance->createGameObject(), tireSprite);
+    tireGameObject = CarGame::instance->createGameObject();
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointDef.localAnchorA.Set(3, 3);
-    frJoint = (b2RevoluteJoint *)phys->initJoint(tire->gameObject->getComponent<PhysicsComponent>(), &jointDef);
+    frJoint = (b2RevoluteJoint *)phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 }
 
