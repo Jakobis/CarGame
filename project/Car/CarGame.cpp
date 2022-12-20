@@ -396,7 +396,7 @@ void CarGame::onKey(SDL_Event &event)
             if (gameState == GameState::GameOver)
             {
                 init();
-                gameState = GameState::Ready;
+                gameState = GameState::Running;
             }
             else if (gameState == GameState::Ready)
             {
