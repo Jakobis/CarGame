@@ -154,6 +154,8 @@ void CarGame::init()
             spawnBuilding(position);
         }
     }
+
+    currentScore = 0;
 }
 
 void CarGame::spawnBuilding(glm::vec2 position)
@@ -287,6 +289,7 @@ void CarGame::spawnExplosion(glm::vec2 position)
 {
     auto obj = createGameObject();
     obj->setPosition(position);
+    obj->setRotation(ran(gen) * 360);
     auto sc = obj->addComponent<SpriteComponent>();
     sc->setSprite(explosionSprites.at(0));
     auto sac = obj->addComponent<SpriteAnimationComponent>();

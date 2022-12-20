@@ -71,7 +71,6 @@ private:
     b2World *world = nullptr;
     float enemySpawnTimer = 0;
     float NPCSpawnTimer = 0;
-    int progress = 0;
     const float physicsScale = 10;
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
@@ -80,6 +79,6 @@ private:
     bool doDebugDraw = false;
     GameState gameState = GameState::Running;
     friend class PhysicsComponent;
-    int winningScore = 1;
+    int winningScore = 20;
     int currentScore = 0;
 };
