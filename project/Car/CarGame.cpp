@@ -13,6 +13,7 @@
 #include <random>
 #include "glm/gtc/matrix_transform.hpp"
 #include "SDL_mixer.h"
+#include "PowerupComponent.hpp"
 
 using namespace sre;
 
@@ -187,9 +188,7 @@ void CarGame::spawnEnemy(glm::vec2 position)
 {
     if (position == glm::vec2(0, 0))
     {
-        float distance = 300;
-        auto angle = ran(gen) * M_PI * 2;
-        position = carObj->getPosition() + (distance * glm::vec2(glm::sin(angle), glm::cos(angle)));
+        position = getRandomSpawnPosition();
     }
 
     auto enemyObj = createGameObject();
@@ -205,13 +204,19 @@ void CarGame::spawnEnemy(glm::vec2 position)
     enemyObj->addComponent<KillableComponent>();
 }
 
+glm::vec2 CarGame::getRandomSpawnPosition() 
+{
+    float distance = 30;
+    auto angle = ran(gen) * M_PI * 2;
+    auto position = carObj->getPosition() + (distance * glm::vec2(glm::sin(angle), glm::cos(angle)));
+    return position;
+}
+
 void CarGame::spawnNPC(glm::vec2 position)
 {
     if (position == glm::vec2(0, 0))
     {
-        float distance = 30;
-        auto angle = ran(gen) * M_PI * 2;
-        position = carObj->getPosition() + (distance * glm::vec2(glm::sin(angle), glm::cos(angle)));
+        position = getRandomSpawnPosition();
     }
 
     auto NPCObj = createGameObject();
@@ -225,6 +230,25 @@ void CarGame::spawnNPC(glm::vec2 position)
     kc->damageSpeedThreshold = 0;
     auto phys = NPCObj->addComponent<PhysicsComponent>();
     phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
+}
+
+void CarGame::spawnPowerup(PowerupType type, glm::vec2 position) 
+{
+    if (position == glm::vec2(0, 0))
+    {
+        position = getRandomSpawnPosition();
+    }
+
+    auto obj = createGameObject();
+    obj->name = "Powerup";
+    auto spriteComponent = obj->addComponent<SpriteComponent>();
+    auto sprite = spriteAtlas->get("healing.png");
+    sprite.setScale({2, 2});
+    spriteComponent->setSprite(sprite);
+    obj->setPosition(position);
+    auto phys = obj->addComponent<PhysicsComponent>();
+    phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
+    phys->setSensor(true);
 }
 
 void CarGame::handleSpawning(float time)
@@ -244,8 +268,9 @@ void CarGame::handleSpawning(float time)
     NPCSpawnTimer -= time;
     if (NPCSpawnTimer <= 0) {
 
-        NPCSpawnTimer += baseSpawnTime;
+        NPCSpawnTimer += baseSpawnTime - 3;
         spawnNPC();
+        spawnPowerup(PowerupType::Heal);
     }
 }
 
@@ -262,6 +287,7 @@ void CarGame::update(float time)
         if (sceneObjects[i]->shouldRemove && sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
         {
             spawnExplosion(sceneObjects[i]->getPosition());
+
             currentScore += sceneObjects[i]->getComponent<KillableComponent>()->getPointValue();
             if (currentScore >= winningScore) {
                 std::cout << "you win" << std::endl;

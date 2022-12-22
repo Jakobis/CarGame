@@ -2,7 +2,7 @@
 
 {
 	"filename": "asphalt.png",
-	"frame": {"x":0,"y":0,"w":170,"h":170},
+	"frame": {"x":384,"y":75,"w":170,"h":170},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "building.jpg",
-	"frame": {"x":170,"y":0,"w":46,"h":47},
+	"frame": {"x":93,"y":0,"w":46,"h":47},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":47},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "enemy1.png",
-	"frame": {"x":216,"y":0,"w":96,"h":96},
+	"frame": {"x":192,"y":75,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "enemy2.png",
-	"frame": {"x":312,"y":0,"w":96,"h":96},
+	"frame": {"x":288,"y":75,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "explosion/tile00.png",
-	"frame": {"x":408,"y":0,"w":64,"h":64},
+	"frame": {"x":139,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "explosion/tile01.png",
-	"frame": {"x":472,"y":0,"w":64,"h":64},
+	"frame": {"x":203,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "explosion/tile02.png",
-	"frame": {"x":536,"y":0,"w":64,"h":64},
+	"frame": {"x":651,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "explosion/tile03.png",
-	"frame": {"x":600,"y":0,"w":64,"h":64},
+	"frame": {"x":715,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "explosion/tile04.png",
-	"frame": {"x":664,"y":0,"w":64,"h":64},
+	"frame": {"x":779,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "explosion/tile05.png",
-	"frame": {"x":728,"y":0,"w":64,"h":64},
+	"frame": {"x":843,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -82,7 +82,7 @@
 },
 {
 	"filename": "explosion/tile06.png",
-	"frame": {"x":792,"y":0,"w":64,"h":64},
+	"frame": {"x":907,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -90,7 +90,7 @@
 },
 {
 	"filename": "explosion/tile07.png",
-	"frame": {"x":856,"y":0,"w":64,"h":64},
+	"frame": {"x":0,"y":75,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -98,7 +98,7 @@
 },
 {
 	"filename": "explosion/tile08.png",
-	"frame": {"x":920,"y":0,"w":64,"h":64},
+	"frame": {"x":64,"y":75,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -106,7 +106,7 @@
 },
 {
 	"filename": "explosion/tile09.png",
-	"frame": {"x":0,"y":170,"w":64,"h":64},
+	"frame": {"x":128,"y":75,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -114,7 +114,7 @@
 },
 {
 	"filename": "explosion/tile010.png",
-	"frame": {"x":64,"y":170,"w":64,"h":64},
+	"frame": {"x":267,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -122,7 +122,7 @@
 },
 {
 	"filename": "explosion/tile011.png",
-	"frame": {"x":128,"y":170,"w":64,"h":64},
+	"frame": {"x":331,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -130,7 +130,7 @@
 },
 {
 	"filename": "explosion/tile012.png",
-	"frame": {"x":192,"y":170,"w":64,"h":64},
+	"frame": {"x":395,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -138,7 +138,7 @@
 },
 {
 	"filename": "explosion/tile013.png",
-	"frame": {"x":256,"y":170,"w":64,"h":64},
+	"frame": {"x":459,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -146,7 +146,7 @@
 },
 {
 	"filename": "explosion/tile014.png",
-	"frame": {"x":320,"y":170,"w":64,"h":64},
+	"frame": {"x":523,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -154,7 +154,7 @@
 },
 {
 	"filename": "explosion/tile015.png",
-	"frame": {"x":384,"y":170,"w":64,"h":64},
+	"frame": {"x":587,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -162,15 +162,23 @@
 },
 {
 	"filename": "game-over.png",
-	"frame": {"x":0,"y":234,"w":800,"h":400},
+	"frame": {"x":0,"y":645,"w":800,"h":400},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":400},
 	"sourceSize": {"w":800,"h":400}
 },
 {
+	"filename": "healing.png",
+	"frame": {"x":6,"y":0,"w":15,"h":15},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":15},
+	"sourceSize": {"w":15,"h":15}
+},
+{
 	"filename": "man.png",
-	"frame": {"x":800,"y":234,"w":40,"h":57},
+	"frame": {"x":53,"y":0,"w":40,"h":57},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":57},
@@ -178,7 +186,7 @@
 },
 {
 	"filename": "Tire.png",
-	"frame": {"x":840,"y":234,"w":6,"h":12},
+	"frame": {"x":0,"y":0,"w":6,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":6,"h":12},
@@ -186,7 +194,7 @@
 },
 {
 	"filename": "Truck.png",
-	"frame": {"x":846,"y":234,"w":32,"h":75},
+	"frame": {"x":21,"y":0,"w":32,"h":75},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":75},
@@ -194,7 +202,7 @@
 },
 {
 	"filename": "youwin.png",
-	"frame": {"x":0,"y":634,"w":600,"h":400},
+	"frame": {"x":0,"y":245,"w":600,"h":400},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":600,"h":400},
@@ -207,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:34b4da6bdcd6a4ad741f97248877bf83:8bfa01cdcc2a34d7c883281e18450396:0cc8a77b70c78c003d18a01f226c6fa5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8402879d438d03bc87f9be279b506e96:03b184981cbc79eb6591c153d3b77b91:0cc8a77b70c78c003d18a01f226c6fa5$"
 }
 }

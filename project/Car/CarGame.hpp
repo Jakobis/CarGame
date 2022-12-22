@@ -7,6 +7,7 @@
 #include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
 #include <random>
+#include "PowerupComponent.hpp"
 
 class PhysicsComponent;
 
@@ -52,8 +53,10 @@ private:
     void spawnBuilding(glm::vec2 position);
     void spawnEnemy(glm::vec2 position = glm::vec2(0, 0));
     void spawnNPC(glm::vec2 position = glm::vec2(0, 0));
+    void spawnPowerup(PowerupType type, glm::vec2 position = glm::vec2(0, 0));
     void spawnExplosion(glm::vec2 position);
     void handleSpawning(float time);
+    glm::vec2 getRandomSpawnPosition();
 
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<GameObject> carObj;
