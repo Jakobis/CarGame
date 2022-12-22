@@ -76,10 +76,10 @@ void CarGame::init()
     camera.reset();
     physicsComponentLookup.clear();
     initPhysics();
-    auto camObj = createGameObject();
-    camObj->name = "Camera";
-    camera = camObj->addComponent<SideScrollingCamera>();
-    camObj->setPosition(windowSize * 0.5f);
+
+
+
+    //initializa music - shamelessly stolen from slides.
     Mix_OpenAudio(
         22050,              // int frequency
         MIX_DEFAULT_FORMAT, // Uint16 format
@@ -90,6 +90,7 @@ void CarGame::init()
     Mix_PlayMusic(music, -1);
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
+    //initialize explosion sprites
     explosionSprites = std::vector<sre::Sprite>();
     for (int i = 0; i < 16; i++)
     {
@@ -98,6 +99,8 @@ void CarGame::init()
         sprite.setScale({2, 2});
         explosionSprites.push_back(sprite);
     }
+
+    //initialize enemy sprites
     enemySprites = std::vector<sre::Sprite>();
     enemySprites.push_back(spriteAtlas->get("enemy1.png"));
     enemySprites.push_back(spriteAtlas->get("enemy2.png"));
@@ -105,11 +108,10 @@ void CarGame::init()
     {
         enemySprites.at(i).setScale({2,2});
     }
-    
+
 
     carObj = createGameObject();
     carObj->name = carName;
-    camera->setFollowObject(carObj, {0, 0});
     auto so = carObj->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas->get("Truck.png");
     sprite.setScale({2, 2});
@@ -132,6 +134,13 @@ void CarGame::init()
         {
             return a->name > b->name;
         });
+
+    //initialize camera
+    auto camObj = createGameObject();
+    camObj->name = "Camera";
+    camera = camObj->addComponent<SideScrollingCamera>();
+    camObj->setPosition(windowSize * 0.5f);
+    camera->setFollowObject(carObj, {0, 0});
 
     // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
     // for (auto &s : spriteAnim)
