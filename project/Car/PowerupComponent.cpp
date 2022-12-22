@@ -1,27 +1,38 @@
 //
-// Created by Morten Nobel-Jørgensen on 10/10/2017.
+
+// Created by Morten Nobel-Jørgensen on 19/10/2017.
 //
 
-#include <sre/SpriteAtlas.hpp>
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/transform.hpp>
+#include <SDL_events.h>
+#include <iostream>
 #include "PowerupComponent.hpp"
+#include "GameObject.hpp"
+#include "SpriteComponent.hpp"
+#include "PhysicsComponent.hpp"
 #include "CarGame.hpp"
+#include "SpriteComponent.hpp"
+#include "Car.hpp"
+#include "GameObject.hpp"
 
-using namespace sre;
-using namespace glm;
-
-PowerupComponent::PowerupComponent()
+PowerupComponent::PowerupComponent(GameObject *gameObject) : Component(gameObject)
 {
+    this->gameObject = gameObject;
 }
 
-void PowerupComponent::init(PowerupType type)
+void PowerupComponent::onCollisionStart(PhysicsComponent *comp)
+{
+    if (comp->getGameObject()->getComponent<Car>() != nullptr)
+    {
+        gameObject->remove();
+    }
+}
+
+
+PowerupType PowerupComponent::getType() {
+    return type;
+}
+
+void PowerupComponent::init(PowerupType type) 
 {
     this->type = type;
-}
-
-PowerupType PowerupComponent::getType() 
-{
-    return type;
 }

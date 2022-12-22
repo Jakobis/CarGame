@@ -249,6 +249,7 @@ void CarGame::spawnPowerup(PowerupType type, glm::vec2 position)
     auto phys = obj->addComponent<PhysicsComponent>();
     phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
     phys->setSensor(true);
+    auto pc = obj->addComponent<PowerupComponent>();
 }
 
 void CarGame::handleSpawning(float time)
@@ -268,7 +269,7 @@ void CarGame::handleSpawning(float time)
     NPCSpawnTimer -= time;
     if (NPCSpawnTimer <= 0) {
 
-        NPCSpawnTimer += baseSpawnTime - 3;
+        NPCSpawnTimer += baseSpawnTime;
         spawnNPC();
         spawnPowerup(PowerupType::Heal);
     }

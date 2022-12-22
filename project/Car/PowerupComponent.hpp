@@ -11,12 +11,13 @@ enum class PowerupType
     Invulnerability
 };
 
-class PowerupComponent
+class PowerupComponent : public Component
 {
 public:
-    PowerupComponent();
+    explicit PowerupComponent(GameObject *gameObject);
     void init(PowerupType type);
     PowerupType getType();
+    void onCollisionStart(PhysicsComponent *comp) override;
 private:
     PowerupType type;
 };

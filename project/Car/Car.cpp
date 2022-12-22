@@ -231,4 +231,17 @@ void Car::onCollisionStart(PhysicsComponent *comp)
             endGame();
         }
     }
+    auto pow = comp->getGameObject()->getComponent<PowerupComponent>();
+    if (pow != nullptr)
+    {
+        switch (pow->getType())
+        {
+        case PowerupType::Heal:
+            health = maxHealth;
+            break;
+        
+        default:
+            break;
+        }
+    }
 }
