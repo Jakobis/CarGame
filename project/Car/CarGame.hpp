@@ -8,6 +8,8 @@
 #include "Box2DDebugDraw.hpp"
 #include <random>
 #include "PowerupComponent.hpp"
+#include <deque>
+#include "FrameTiming.hpp"
 
 class PhysicsComponent;
 
@@ -57,6 +59,7 @@ private:
     void spawnExplosion(glm::vec2 position);
     void handleSpawning(float time);
     void drawCarDebugMenu();
+    void drawFrameTimingDebug();
     glm::vec2 getRandomSpawnPosition();
 
     std::shared_ptr<SideScrollingCamera> camera;
@@ -64,6 +67,8 @@ private:
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
     std::vector<sre::Sprite> explosionSprites;
     std::vector<sre::Sprite> enemySprites;
+    std::deque<FrameTiming> frameTimingHistory;
+    int maxFrameHistory = 5000;
 
     std::uniform_real_distribution<double> ran;
     std::mt19937 gen;

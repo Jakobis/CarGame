@@ -17,6 +17,8 @@
 #include "picojson.h"
 #include <fstream>
 
+#define _countof(array) (sizeof(array) / sizeof(array[0]))
+
 using namespace sre;
 
 const glm::vec2 CarGame::windowSize(1200, 800);
@@ -321,6 +323,11 @@ void CarGame::update(float time)
     // ...so that we may remove them in O(n)
 
     sceneObjects.erase(it, sceneObjects.end());
+
+    this->frameTimingHistory.push_front(r.getLastFrameStats());
+    while(frameTimingHistory.size() > maxFrameHistory) {
+        frameTimingHistory.pop_back();
+    }
 }
 
 void CarGame::spawnExplosion(glm::vec2 position)
@@ -399,6 +406,7 @@ void CarGame::render()
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
         drawCarDebugMenu();
+        drawFrameTimingDebug();
         debugDraw.clear();
     }
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
@@ -438,7 +446,6 @@ void CarGame::onKey(SDL_Event &event)
         switch (event.key.keysym.sym)
         {
         case SDLK_ESCAPE:
-            // press 'd' for physics debug
             doDebugDraw = !doDebugDraw;
             if (doDebugDraw)
             {
@@ -462,6 +469,9 @@ void CarGame::onKey(SDL_Event &event)
             {
                 gameState = GameState::Running;
             }
+            break;
+        case SDLK_o:
+            spawnEnemy();
             break;
         }
     }
@@ -493,7 +503,8 @@ void CarGame::updatePhysics()
     }
 }
 
-void CarGame::drawCarDebugMenu() {
+void CarGame::drawCarDebugMenu() 
+{
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
     ImGui::SetNextWindowBgAlpha(0.5f);
     ImGui::Begin("Car Debug Menu", nullptr);
@@ -542,6 +553,83 @@ void CarGame::drawCarDebugMenu() {
             car->frontTireMaxDriveForce = v.get("frontTireMaxDriveForce").get<double>();
         }
     }
+}
+
+static glm::vec4 DeltaTimeToColor(float dt)
+{
+    // From https://github.com/sawickiap/RegEngine/blob/613c31fd60558a75c5b8902529acfa425fc97b2a/Source/Game.cpp#L331
+    constexpr glm::vec3 colors[] = {
+        {0.f, 0.f, 1.f}, // blue
+        {0.f, 1.f, 0.f}, // green
+        {1.f, 1.f, 0.f}, // yellow
+        {1.f, 0.f, 0.f}, // red
+    };
+    constexpr float dts[] = {
+        1.f / 120.f,
+        1.f / 60.f,
+        1.f / 30.f,
+        1.f / 15.f,
+    };
+    if(dt < dts[0])
+        return glm::vec4(colors[0], 1.f);
+    for(size_t i = 1; i < _countof(dts); ++i)
+    {
+        if(dt < dts[i])
+        {
+            const float t = (dt - dts[i - 1]) / (dts[i] - dts[i - 1]);
+            return glm::vec4(glm::mix(colors[i - 1], colors[i], t), 1.f);
+        }
+    }
+    return glm::vec4(colors[_countof(dts) - 1], 1.f);
+}
+
+
+void CarGame::drawFrameTimingDebug() 
+{
+    ImGui::SetNextWindowBgAlpha(0.5f);
+    ImGui::Begin("Frame Timings", nullptr);
+    ImGui::SetWindowFontScale(0.50f);
+    
+    if(frameTimingHistory.size() > 0) {
+        auto lastFrame = frameTimingHistory[0];
+        std::string frameInfo = "Delta Last frame " + std::to_string(lastFrame.delta() * 1000) + "ms";
+        ImGui::Text(frameInfo.c_str());
+    }
+
+    // From https://github.com/sawickiap/RegEngine/blob/613c31fd60558a75c5b8902529acfa425fc97b2a/Source/Game.cpp#L331
+    auto frameStats = r.getLastFrameStats();
+    const float width = ImGui::GetWindowWidth();
+    const size_t frameCount = frameTimingHistory.size();
+    if(width > 0.f && frameCount > 0)
+    {
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+        ImVec2 basePos = ImGui::GetCursorScreenPos();
+        constexpr float minHeight = 2.f;
+        constexpr float maxHeight = 64.f;
+        float endX = width;
+        constexpr float dtMin = 1.f / 120.f;
+        constexpr float dtMax = 1.f / 15.f;
+        const float dtMin_Log2 = log2(dtMin);
+        const float dtMax_Log2 = log2(dtMax);
+        drawList->AddRectFilled(basePos, ImVec2(basePos.x + width, basePos.y + maxHeight), 0xFF404040);
+        for(size_t frameIndex = 0; frameIndex < frameCount && endX > 0.f; ++frameIndex)
+        {
+            const float delta = this->frameTimingHistory[frameIndex].delta();
+            const float frameWidth = delta / dtMin;
+            const float frameHeightFactor = (log2(delta) - dtMin_Log2) / (dtMax_Log2 - dtMin_Log2);
+            const float frameHeightFactor_Nrm = std::min(std::max(0.f, frameHeightFactor), 1.f);
+            const float frameHeight = glm::mix(minHeight, maxHeight, frameHeightFactor_Nrm);
+            const float begX = endX - frameWidth;
+            const uint32_t color = glm::packUnorm4x8(DeltaTimeToColor(delta));
+            drawList->AddRectFilled(
+                ImVec2(basePos.x + std::max(0.f, floor(begX)), basePos.y + maxHeight - frameHeight),
+                ImVec2(basePos.x + ceil(endX), basePos.y + maxHeight),
+                color);
+            endX = begX;
+        }
+        ImGui::Dummy(ImVec2(width, maxHeight));
+    }
+    ImGui::End();
 }
 
 void CarGame::initPhysics()
