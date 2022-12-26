@@ -199,8 +199,8 @@ void CarGame::spawnEnemy(glm::vec2 position)
     sac->setSprites(enemySprites);
     sac->setAnimationTime(0.5);
     auto enemyComp = enemyObj->addComponent<EnemyComponent>();
-    enemyObj->setPosition(position);
     enemyComp->init(carObj, position);
+    enemyObj->setPosition(position);
     enemyObj->addComponent<KillableComponent>();
 }
 
@@ -279,8 +279,8 @@ void CarGame::update(float time)
 {
     if (gameState == GameState::Running)
     {
-        updatePhysics();
         handleSpawning(time);
+        updatePhysics();
     }
     for (int i = 0; i < sceneObjects.size(); i++)
     {
