@@ -15,8 +15,8 @@ enum Control
 class Tire
 {
 public:
-    Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite);
-    void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse);
+    Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite, bool isFrontTire);
+    void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse, float currentTraction, float dragRatio);
     void updateFriction();
     void updateDrive(char control);
 
@@ -26,9 +26,10 @@ private:
     float maxBackwardSpeed;
     float maxDriveForce;
     float maxLateralImpulse;
-    float currentTraction;    // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
-    float dragRatio;          // Between 0-1, describes how much of the traction translates to drag
+    float currentTraction;
+    float dragRatio;
     float currentEngineSpeed; // Between 0-1, describes how fast the engine is revving
+    bool isFrontTire;
     friend class Car;
 };
 
@@ -53,5 +54,13 @@ private:
     float maxHealth = 1000;
     float health = maxHealth;
     float damageSpeedThreshold = 100;
+    float maxForwardSpeed = 250;
+    float maxBackwardSpeed = -40;
+    float backTireMaxDriveForce = 30000;
+    float frontTireMaxDriveForce = 50000;
+    float backTireMaxLateralImpulse = 8.5;
+    float frontTireMaxLateralImpulse = 7.5;
+    float currentTraction = 1;    // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
+    float dragRatio = 0.25;          // Between 0-1, describes how much of the traction translates to drag
     friend class CarGame;
 };

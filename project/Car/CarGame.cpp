@@ -396,6 +396,7 @@ void CarGame::render()
     {
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
+        drawCarDebugMenu();
         debugDraw.clear();
     }
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
@@ -488,6 +489,23 @@ void CarGame::updatePhysics()
         gameObject->setPosition(glm::vec2(position.x * physicsScale, position.y * physicsScale));
         gameObject->setRotation(glm::degrees(angle));
     }
+}
+
+void CarGame::drawCarDebugMenu() {
+    auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
+    ImGui::SetNextWindowBgAlpha(0.5f);
+    ImGui::Begin("Car Debug Menu", nullptr);
+    ImGui::SetWindowFontScale(0.50f);
+    auto car = carObj->getComponent<Car>();
+    ImGui::DragFloat("Drag Ratio", &car->dragRatio, 0.01f, 0.0f, 5.0f);
+    ImGui::DragFloat("Current Traction", &car->currentTraction, 0.1f, 0.0f, 5.0f);
+    ImGui::DragFloat("Max Forward Speed", &car->maxForwardSpeed, 1.0f, 0.0f, 1000.0f);
+    ImGui::DragFloat("Max Backwards Speed", &car->maxBackwardSpeed, 1.0f, -1000.0f, 0.0f);
+    ImGui::DragFloat("Back Tire Max Lateral Impulse", &car->backTireMaxLateralImpulse, 0.5f, 0.0f, 50.0f);
+    ImGui::DragFloat("Front Tire Max Lateral Impulse", &car->frontTireMaxLateralImpulse, 0.5f, 0.0f, 50.0f);
+    ImGui::DragFloat("Back Tire Max Drive Force", &car->backTireMaxDriveForce, 500.0f, 0.0f, 100000.0f);
+    ImGui::DragFloat("Front Tire Max Drive Force", &car->frontTireMaxDriveForce, 500.0f, 0.0f, 100000.0f);
+    ImGui::End();
 }
 
 void CarGame::initPhysics()

@@ -5,24 +5,25 @@
 #include <iostream>
 #include "math.h"
 
-Tire::Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite)
+Tire::Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite, bool isFrontTire)
 {
     auto s = gameObject->addComponent<SpriteComponent>();
     s->setSprite(*sprite);
     phys = gameObject->addComponent<PhysicsComponent>();
     phys->initBox(b2_dynamicBody, {10 / 10, 20 / 10}, {0, 0}, 1);
     phys->setSensor(true);
-    currentTraction = 1;
-    dragRatio = 0.25;
     currentEngineSpeed = 0;
+    this->isFrontTire = isFrontTire;
 }
 
-void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse)
+void Tire::setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse, float currentTraction, float dragRatio)
 {
     this->maxForwardSpeed = maxForwardSpeed;
     this->maxBackwardSpeed = maxBackwardSpeed;
     this->maxDriveForce = maxDriveForce;
     this->maxLateralImpulse = maxLateralImpulse;
+    this->currentTraction = currentTraction;
+    this->dragRatio = dragRatio;
 }
 
 void Tire::updateFriction()
@@ -97,13 +98,6 @@ Car::Car(GameObject *gameObject) : Component(gameObject)
 
 void Car::initTires(sre::Sprite *tireSprite)
 {
-    float maxForwardSpeed = 250;
-    float maxBackwardSpeed = -40;
-    float backTireMaxDriveForce = 30000;
-    float frontTireMaxDriveForce = 50000;
-    float backTireMaxLateralImpulse = 8.5;
-    float frontTireMaxLateralImpulse = 7.5;
-
     b2RevoluteJointDef jointDef;
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0;
@@ -112,32 +106,28 @@ void Car::initTires(sre::Sprite *tireSprite)
 
     // back left tire
     auto tireGameObject = CarGame::instance->createGameObject();
-    auto tire = std::make_shared<Tire>(tireGameObject, tireSprite);
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+    auto tire = std::make_shared<Tire>(tireGameObject, tireSprite, false);
     jointDef.localAnchorA.Set(-3, -4);
     phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // back right tire
     tireGameObject = CarGame::instance->createGameObject();
-    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite, false);
     jointDef.localAnchorA.Set(3, -4);
     phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front left
     tireGameObject = CarGame::instance->createGameObject();
-    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite, true);
     jointDef.localAnchorA.Set(-3, 3);
     flJoint = (b2RevoluteJoint *)phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
     // front right
     tireGameObject = CarGame::instance->createGameObject();
-    tire = std::make_shared<Tire>(tireGameObject, tireSprite);
-    tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+    tire = std::make_shared<Tire>(tireGameObject, tireSprite, true);
     jointDef.localAnchorA.Set(3, 3);
     frJoint = (b2RevoluteJoint *)phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
@@ -147,6 +137,12 @@ void Car::update(float deltaTime)
 {
     for (auto tire : tires)
     {
+        if (tire->isFrontTire) {
+            tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse, currentTraction, dragRatio);
+        }
+        else {
+            tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, currentTraction, dragRatio);
+        }
         tire->updateFriction();
     }
     for (auto tire : tires)
