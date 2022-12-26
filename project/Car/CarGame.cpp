@@ -14,6 +14,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "SDL_mixer.h"
 #include "PowerupComponent.hpp"
+#include "picojson.h"
+#include <fstream>
 
 using namespace sre;
 
@@ -505,7 +507,41 @@ void CarGame::drawCarDebugMenu() {
     ImGui::DragFloat("Front Tire Max Lateral Impulse", &car->frontTireMaxLateralImpulse, 0.5f, 0.0f, 50.0f);
     ImGui::DragFloat("Back Tire Max Drive Force", &car->backTireMaxDriveForce, 500.0f, 0.0f, 100000.0f);
     ImGui::DragFloat("Front Tire Max Drive Force", &car->frontTireMaxDriveForce, 500.0f, 0.0f, 100000.0f);
+    auto save = ImGui::Button("Save Settings");
+    ImGui::SameLine();
+    auto load = ImGui::Button("Load Settings");
     ImGui::End();
+    if(save) {
+        auto f = std::ofstream("carSettings.json");
+        picojson::object o;
+        o["dragRatio"] = picojson::value(car->dragRatio);
+        o["currentTraction"] = picojson::value(car->currentTraction);
+        o["maxBackwardSpeed"] = picojson::value(car->maxBackwardSpeed);
+        o["maxForwardSpeed"] = picojson::value(car->maxForwardSpeed);
+        o["backTireMaxLateralImpulse"] = picojson::value(car->backTireMaxLateralImpulse);
+        o["frontTireMaxLateralImpulse"] = picojson::value(car->frontTireMaxLateralImpulse);
+        o["backTireMaxDriveForce"] = picojson::value(car->backTireMaxDriveForce);
+        o["frontTireMaxDriveForce"] = picojson::value(car->frontTireMaxDriveForce);
+        f << picojson::value(o);
+        f.flush();
+    }
+    if(load) {
+        auto f = std::ifstream("carSettings.json");
+        picojson::value v;
+        if (!f){
+            std::cerr << "carSettings.json could not be read, maybe it has not been saved yet";
+        } else {
+            f >> v;
+            car->dragRatio = v.get("dragRatio").get<double>();
+            car->currentTraction = v.get("currentTraction").get<double>();
+            car->maxBackwardSpeed = v.get("maxBackwardSpeed").get<double>();
+            car->maxForwardSpeed = v.get("maxForwardSpeed").get<double>();
+            car->backTireMaxLateralImpulse = v.get("backTireMaxLateralImpulse").get<double>();
+            car->frontTireMaxLateralImpulse = v.get("frontTireMaxLateralImpulse").get<double>();
+            car->backTireMaxDriveForce = v.get("backTireMaxDriveForce").get<double>();
+            car->frontTireMaxDriveForce = v.get("frontTireMaxDriveForce").get<double>();
+        }
+    }
 }
 
 void CarGame::initPhysics()
