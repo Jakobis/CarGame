@@ -4,10 +4,10 @@
 #include "glm/glm.hpp"
 #include "Component.hpp"
 
-class SideScrollingCamera : public Component
+class ScrollingCamera : public Component
 {
 public:
-    explicit SideScrollingCamera(GameObject *gameObject);
+    explicit ScrollingCamera(GameObject *gameObject);
 
     void update(float deltaTime) override;
 

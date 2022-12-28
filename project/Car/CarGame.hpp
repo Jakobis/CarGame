@@ -3,7 +3,7 @@
 #include <vector>
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
-#include "SideScrollingCamera.hpp"
+#include "ScrollingCamera.hpp"
 #include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
 #include <random>
@@ -62,7 +62,7 @@ private:
     void drawFrameTimingDebug();
     glm::vec2 getRandomSpawnPosition();
 
-    std::shared_ptr<SideScrollingCamera> camera;
+    std::shared_ptr<ScrollingCamera> camera;
     std::shared_ptr<GameObject> carObj;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
     std::vector<sre::Sprite> explosionSprites;

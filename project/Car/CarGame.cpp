@@ -82,9 +82,7 @@ void CarGame::init()
     physicsComponentLookup.clear();
     initPhysics();
 
-
-
-    //initializa music - shamelessly stolen from slides.
+    // initializa music - shamelessly stolen from slides.
     Mix_OpenAudio(
         22050,              // int frequency
         MIX_DEFAULT_FORMAT, // Uint16 format
@@ -95,7 +93,7 @@ void CarGame::init()
     Mix_PlayMusic(music, -1);
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
-    //initialize explosion sprites
+    // initialize explosion sprites
     explosionSprites = std::vector<sre::Sprite>();
     for (int i = 0; i < 16; i++)
     {
@@ -105,15 +103,14 @@ void CarGame::init()
         explosionSprites.push_back(sprite);
     }
 
-    //initialize enemy sprites
+    // initialize enemy sprites
     enemySprites = std::vector<sre::Sprite>();
     enemySprites.push_back(spriteAtlas->get("enemy1.png"));
     enemySprites.push_back(spriteAtlas->get("enemy2.png"));
     for (int i = 0; i < 2; i++)
     {
-        enemySprites.at(i).setScale({2,2});
+        enemySprites.at(i).setScale({2, 2});
     }
-
 
     carObj = createGameObject();
     carObj->name = carName;
@@ -127,9 +124,10 @@ void CarGame::init()
     sprite = spriteAtlas->get("Tire.png");
     sprite.setScale({2, 2});
     carComp->initTires(&sprite);
-    carComp->endGame = [this]{
-            setGameState(GameState::GameOver);
-        };
+    carComp->endGame = [this]
+    {
+        setGameState(GameState::GameOver);
+    };
 
     // Absolute hack -- Sort the car and tires by name, s.t. car is drawn over tires
     std::sort(
@@ -140,10 +138,10 @@ void CarGame::init()
             return a->name > b->name;
         });
 
-    //initialize camera
+    // initialize camera
     auto camObj = createGameObject();
     camObj->name = "Camera";
-    camera = camObj->addComponent<SideScrollingCamera>();
+    camera = camObj->addComponent<ScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
     camera->setFollowObject(carObj, {0, 0});
 
@@ -208,7 +206,7 @@ void CarGame::spawnEnemy(glm::vec2 position)
     enemyObj->addComponent<KillableComponent>();
 }
 
-glm::vec2 CarGame::getRandomSpawnPosition() 
+glm::vec2 CarGame::getRandomSpawnPosition()
 {
     float distance = 30;
     auto angle = ran(gen) * M_PI * 2;
@@ -236,7 +234,7 @@ void CarGame::spawnNPC(glm::vec2 position)
     phys->initCircle(b2_dynamicBody, 30 / 10, position, 5);
 }
 
-void CarGame::spawnPowerup(PowerupType type, glm::vec2 position) 
+void CarGame::spawnPowerup(PowerupType type, glm::vec2 position)
 {
     if (position == glm::vec2(0, 0))
     {
@@ -263,7 +261,8 @@ void CarGame::handleSpawning(float time)
     if (enemySpawnTimer <= 0)
     {
         float denominator = winningScore - currentScore;
-        if (denominator < 1) {
+        if (denominator < 1)
+        {
             denominator = 1;
         }
         float divisor = winningScore / baseSpawnTime;
@@ -271,7 +270,8 @@ void CarGame::handleSpawning(float time)
         spawnEnemy();
     }
     NPCSpawnTimer -= time;
-    if (NPCSpawnTimer <= 0) {
+    if (NPCSpawnTimer <= 0)
+    {
 
         NPCSpawnTimer += baseSpawnTime;
         spawnNPC();
@@ -294,22 +294,23 @@ void CarGame::update(float time)
             spawnExplosion(sceneObjects[i]->getPosition());
 
             currentScore += sceneObjects[i]->getComponent<KillableComponent>()->getPointValue();
-            if (currentScore >= winningScore) {
+            if (currentScore >= winningScore)
+            {
                 std::cout << "you win" << std::endl;
                 gameState = GameState::GameWon;
             }
         }
     }
-    if (gameState == GameState::GameWon) 
+    if (gameState == GameState::GameWon)
     {
         for (int i = 0; i < sceneObjects.size(); i++)
-    {
-        if (sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
         {
-            sceneObjects[i]->shouldRemove = true;
-            spawnExplosion(sceneObjects[i]->getPosition());
+            if (sceneObjects[i]->getComponent<KillableComponent>() != nullptr)
+            {
+                sceneObjects[i]->shouldRemove = true;
+                spawnExplosion(sceneObjects[i]->getPosition());
+            }
         }
-    }
     }
     // remove_if from <algorithm> moves elements to the end of the vector...
     auto it = std::remove_if(
@@ -325,7 +326,8 @@ void CarGame::update(float time)
     sceneObjects.erase(it, sceneObjects.end());
 
     this->frameTimingHistory.push_front(r.getLastFrameStats());
-    while(frameTimingHistory.size() > maxFrameHistory) {
+    while (frameTimingHistory.size() > maxFrameHistory)
+    {
         frameTimingHistory.pop_back();
     }
 }
@@ -411,20 +413,19 @@ void CarGame::render()
     }
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
     ImGui::SetNextWindowPos(ImVec2(0 * window.x, .0f * window.y), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(0.25 * window.x, 0.06* window.y), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(0.25 * window.x, 0.06 * window.y), ImGuiCond_Always);
     ImGui::Begin("Health Bar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     auto car = carObj->getComponent<Car>();
     ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string((int)ceil(car->health)).data());
     ImGui::End();
 
-    //score counter
-    auto size = ImVec2(0.25 * window.x, 0.06* window.y);
+    // score counter
+    auto size = ImVec2(0.25 * window.x, 0.06 * window.y);
     ImGui::SetNextWindowPos(ImVec2(0.5 * window.x - (size.x * 0.5), .0f * window.y), ImGuiCond_Always);
     ImGui::SetNextWindowSize(size, ImGuiCond_Always);
     ImGui::Begin("Score", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::ProgressBar((float)currentScore / (float)winningScore, ImVec2(-1, 0), std::to_string(currentScore).data());
     ImGui::End();
-
 }
 
 void CarGame::onKey(SDL_Event &event)
@@ -503,7 +504,7 @@ void CarGame::updatePhysics()
     }
 }
 
-void CarGame::drawCarDebugMenu() 
+void CarGame::drawCarDebugMenu()
 {
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
     ImGui::SetNextWindowBgAlpha(0.5f);
@@ -522,7 +523,8 @@ void CarGame::drawCarDebugMenu()
     ImGui::SameLine();
     auto load = ImGui::Button("Load Settings");
     ImGui::End();
-    if(save) {
+    if (save)
+    {
         auto f = std::ofstream("carSettings.json");
         picojson::object o;
         o["dragRatio"] = picojson::value(car->dragRatio);
@@ -536,12 +538,16 @@ void CarGame::drawCarDebugMenu()
         f << picojson::value(o);
         f.flush();
     }
-    if(load) {
+    if (load)
+    {
         auto f = std::ifstream("carSettings.json");
         picojson::value v;
-        if (!f){
+        if (!f)
+        {
             std::cerr << "carSettings.json could not be read, maybe it has not been saved yet";
-        } else {
+        }
+        else
+        {
             f >> v;
             car->dragRatio = v.get("dragRatio").get<double>();
             car->currentTraction = v.get("currentTraction").get<double>();
@@ -570,11 +576,11 @@ static glm::vec4 DeltaTimeToColor(float dt)
         1.f / 30.f,
         1.f / 15.f,
     };
-    if(dt < dts[0])
+    if (dt < dts[0])
         return glm::vec4(colors[0], 1.f);
-    for(size_t i = 1; i < _countof(dts); ++i)
+    for (size_t i = 1; i < _countof(dts); ++i)
     {
-        if(dt < dts[i])
+        if (dt < dts[i])
         {
             const float t = (dt - dts[i - 1]) / (dts[i] - dts[i - 1]);
             return glm::vec4(glm::mix(colors[i - 1], colors[i], t), 1.f);
@@ -583,14 +589,14 @@ static glm::vec4 DeltaTimeToColor(float dt)
     return glm::vec4(colors[_countof(dts) - 1], 1.f);
 }
 
-
-void CarGame::drawFrameTimingDebug() 
+void CarGame::drawFrameTimingDebug()
 {
     ImGui::SetNextWindowBgAlpha(0.5f);
     ImGui::Begin("Frame Timings", nullptr);
     ImGui::SetWindowFontScale(0.50f);
-    
-    if(frameTimingHistory.size() > 0) {
+
+    if (frameTimingHistory.size() > 0)
+    {
         auto lastFrame = frameTimingHistory[0];
         std::string frameInfo = "Delta Last frame " + std::to_string(lastFrame.delta() * 1000) + "ms";
         ImGui::Text(frameInfo.c_str());
@@ -600,9 +606,9 @@ void CarGame::drawFrameTimingDebug()
     auto frameStats = r.getLastFrameStats();
     const float width = ImGui::GetWindowWidth();
     const size_t frameCount = frameTimingHistory.size();
-    if(width > 0.f && frameCount > 0)
+    if (width > 0.f && frameCount > 0)
     {
-        ImDrawList* drawList = ImGui::GetWindowDrawList();
+        ImDrawList *drawList = ImGui::GetWindowDrawList();
         ImVec2 basePos = ImGui::GetCursorScreenPos();
         constexpr float minHeight = 2.f;
         constexpr float maxHeight = 64.f;
@@ -612,7 +618,7 @@ void CarGame::drawFrameTimingDebug()
         const float dtMin_Log2 = log2(dtMin);
         const float dtMax_Log2 = log2(dtMax);
         drawList->AddRectFilled(basePos, ImVec2(basePos.x + width, basePos.y + maxHeight), 0xFF404040);
-        for(size_t frameIndex = 0; frameIndex < frameCount && endX > 0.f; ++frameIndex)
+        for (size_t frameIndex = 0; frameIndex < frameCount && endX > 0.f; ++frameIndex)
         {
             const float delta = this->frameTimingHistory[frameIndex].delta();
             const float frameWidth = delta / dtMin;

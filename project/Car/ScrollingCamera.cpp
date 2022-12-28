@@ -2,7 +2,7 @@
 // Created by Morten Nobel-Jørgensen on 10/10/2017.
 //
 
-#include "SideScrollingCamera.hpp"
+#include "ScrollingCamera.hpp"
 #include "PhysicsComponent.hpp"
 #include "CarGame.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -10,19 +10,19 @@
 
 using namespace glm;
 
-SideScrollingCamera::SideScrollingCamera(GameObject *gameObject)
+ScrollingCamera::ScrollingCamera(GameObject *gameObject)
     : Component(gameObject)
 {
     cameraSize = sre::Renderer::instance->getWindowSize().y;
     camera.setOrthographicProjection(cameraSize, -1, 1);
 }
 
-sre::Camera &SideScrollingCamera::getCamera()
+sre::Camera &ScrollingCamera::getCamera()
 {
     return camera;
 }
 
-void SideScrollingCamera::update(float deltaTime)
+void ScrollingCamera::update(float deltaTime)
 {
     auto position = followObject->getPosition();
 
@@ -51,20 +51,20 @@ void SideScrollingCamera::update(float deltaTime)
     camera.lookAt(eye, at, up);
 }
 
-void SideScrollingCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
+void ScrollingCamera::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
 {
     this->followObject = followObject;
     this->offset = offset;
 }
 
-ImVec2 SideScrollingCamera::getScreenPosition(glm::vec2 position)
+ImVec2 ScrollingCamera::getScreenPosition(glm::vec2 position)
 {
     auto x = (glm::vec2)sre::Renderer::instance->getWindowSize();
     x = (glm::vec2(camera.getPosition()) - position + glm::vec2(-x.x, x.y)) * 0.5f;
     return ImVec2(-x.x, x.y);
 }
 
-bool SideScrollingCamera::isInView(glm::vec2 position)
+bool ScrollingCamera::isInView(glm::vec2 position)
 {
     auto ps1 = camera.screenPointToRay({0, 0});
     if (position.x < ps1[0].x || position.y < ps1[0].y)
