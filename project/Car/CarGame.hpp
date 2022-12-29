@@ -90,4 +90,5 @@ private:
     friend class PhysicsComponent;
     int winningScore = 20;
     int currentScore = 0;
+    bool mute = false;
 };
