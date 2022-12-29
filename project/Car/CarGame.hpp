@@ -4,7 +4,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
 #include "ScrollingCamera.hpp"
-#include "BackgroundComponent.hpp"
+#include "Background.hpp"
 #include "Box2DDebugDraw.hpp"
 #include <random>
 #include "PowerupComponent.hpp"
@@ -74,7 +74,7 @@ private:
     std::mt19937 gen;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
-    BackgroundComponent backgroundComponent;
+    Background background;
 
     void updatePhysics();
     b2World *world = nullptr;

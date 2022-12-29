@@ -6,24 +6,24 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
-#include "BackgroundComponent.hpp"
+#include "Background.hpp"
 #include "CarGame.hpp"
 
 using namespace sre;
 using namespace glm;
 
-BackgroundComponent::BackgroundComponent()
+Background::Background()
 {
 }
 
-void BackgroundComponent::renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY)
+void Background::renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY)
 {
     float x = offsetX - (std::fmod(offsetX, spriteSize.x));
     float y = offsetY - (std::fmod(offsetY, spriteSize.y));
     renderPass.draw(batch, glm::translate(vec3(x, y, 0)));
 }
 
-void BackgroundComponent::init(sre::Sprite sprite)
+void Background::init(sre::Sprite sprite)
 {
     float scale = CarGame::windowSize.y / sprite.getSpriteSize().y;
     sprite.setScale({scale, scale});

@@ -152,7 +152,7 @@ void CarGame::init()
     // }
     // anim->setSprites(spriteAnim);
 
-    backgroundComponent.init(spriteAtlas->get("asphalt.png"));
+    background.init(spriteAtlas->get("asphalt.png"));
 
     int buildingAmount = 10;
     int buildingDistance = 2000;
@@ -359,7 +359,7 @@ void CarGame::render()
                   .build();
 
     auto pos = camera->getGameObject()->getPosition();
-    backgroundComponent.renderBackground(rp, pos.x, pos.y);
+    background.renderBackground(rp, pos.x, pos.y);
 
     auto spriteBatchBuilder = SpriteBatch::create();
     int healthCount = 0;

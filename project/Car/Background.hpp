@@ -5,10 +5,10 @@
 #include "sre/Texture.hpp"
 #include "sre/RenderPass.hpp"
 
-class BackgroundComponent
+class Background
 {
 public:
-    BackgroundComponent();
+    Background();
     void init(sre::Sprite sprite);
     void renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY);
 
