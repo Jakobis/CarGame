@@ -82,7 +82,7 @@ void CarGame::init()
     physicsComponentLookup.clear();
     initPhysics();
 
-    // initializa music - shamelessly stolen from slides.
+    // initialize music - shamelessly stolen from slides.
     Mix_OpenAudio(
         22050,              // int frequency
         MIX_DEFAULT_FORMAT, // Uint16 format
@@ -129,7 +129,7 @@ void CarGame::init()
         setGameState(GameState::GameOver);
     };
 
-    // Absolute hack -- Sort the car and tires by name, s.t. car is drawn over tires
+    // Absolute hack -- Sort the Truck and Tires by name, s.t. car is drawn after/over tires
     std::sort(
         sceneObjects.begin(),
         sceneObjects.end(),
@@ -145,15 +145,9 @@ void CarGame::init()
     camObj->setPosition(windowSize * 0.5f);
     camera->setFollowObject(carObj, {0, 0});
 
-    // vector<Sprite> spriteAnim({spriteAtlas->get("bird1.png"), spriteAtlas->get("bird2.png"), spriteAtlas->get("bird3.png"), spriteAtlas->get("bird2.png")});
-    // for (auto &s : spriteAnim)
-    // {
-    //     s.setScale({2, 2});
-    // }
-    // anim->setSprites(spriteAnim);
-
     background.init(spriteAtlas->get("asphalt.png"));
 
+    // Create grid of buildings around middle of play area
     int buildingAmount = 10;
     int buildingDistance = 2000;
     int offset = (-buildingAmount / 2) * buildingDistance + (buildingDistance / 2);
@@ -206,6 +200,7 @@ void CarGame::spawnEnemy(glm::vec2 position)
     enemyObj->addComponent<KillableComponent>();
 }
 
+/// @brief Returns a position 30 units away from player in random direction
 glm::vec2 CarGame::getRandomSpawnPosition()
 {
     float distance = 30;
@@ -322,9 +317,9 @@ void CarGame::update(float time)
         });
 
     // ...so that we may remove them in O(n)
-
     sceneObjects.erase(it, sceneObjects.end());
 
+    // Update queue of frame times, ensuring elements are capped to max size
     this->frameTimingHistory.push_front(r.getLastFrameStats());
     while (frameTimingHistory.size() > maxFrameHistory)
     {
@@ -366,6 +361,7 @@ void CarGame::render()
 
     auto spriteBatchBuilder = SpriteBatch::create();
     int healthCount = 0;
+    // Create health bars for each killable object in view
     for (auto &go : sceneObjects)
     {
         go->renderSprite(spriteBatchBuilder);
@@ -384,13 +380,7 @@ void CarGame::render()
             }
         }
     }
-    if (gameState == GameState::Ready)
-    {
-        // auto sprite = spriteAtlas->get("get-ready.png");
-        // sprite.setPosition(pos);
-        // spriteBatchBuilder.addSprite(sprite);
-    }
-    else if (gameState == GameState::GameOver)
+    if (gameState == GameState::GameOver)
     {
         auto sprite = spriteAtlas->get("game-over.png");
         sprite.setPosition(pos);
@@ -414,6 +404,7 @@ void CarGame::render()
         drawFrameTimingDebug();
         debugDraw.clear();
     }
+    // Health bar
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
     ImGui::SetNextWindowPos(ImVec2(0 * window.x, .0f * window.y), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(0.25 * window.x, 0.06 * window.y), ImGuiCond_Always);
@@ -422,7 +413,7 @@ void CarGame::render()
     ImGui::ProgressBar(car->health / car->maxHealth, ImVec2(-1, 0), std::to_string((int)ceil(car->health)).data());
     ImGui::End();
 
-    // score counter
+    // Score counter
     auto size = ImVec2(0.25 * window.x, 0.06 * window.y);
     ImGui::SetNextWindowPos(ImVec2(0.5 * window.x - (size.x * 0.5), .0f * window.y), ImGuiCond_Always);
     ImGui::SetNextWindowSize(size, ImGuiCond_Always);
@@ -449,7 +440,7 @@ void CarGame::onKey(SDL_Event &event)
     {
         switch (event.key.keysym.sym)
         {
-        case SDLK_ESCAPE:
+        case SDLK_ESCAPE: // Toggle debug view and menus
             doDebugDraw = !doDebugDraw;
             if (doDebugDraw)
             {
@@ -460,10 +451,10 @@ void CarGame::onKey(SDL_Event &event)
                 world->SetDebugDraw(nullptr);
             }
             break;
-        case SDLK_r:
+        case SDLK_r: // Instantly reset game
             init();
             break;
-        case SDLK_SPACE:
+        case SDLK_SPACE: // Restart game if game over or won
             if (gameState == GameState::GameOver || gameState == GameState::GameWon)
             {
                 init();
@@ -474,10 +465,10 @@ void CarGame::onKey(SDL_Event &event)
                 gameState = GameState::Running;
             }
             break;
-        case SDLK_o:
+        case SDLK_o: // Spawn an enemy at a random position
             spawnEnemy();
             break;
-        case SDLK_m:
+        case SDLK_m: // Toggle sound mute
             if (mute)
                 Mix_ResumeMusic();
             else
@@ -514,6 +505,7 @@ void CarGame::updatePhysics()
     }
 }
 
+/// @brief Debug window for modifying car variables and saving/loading them to/from JSON
 void CarGame::drawCarDebugMenu()
 {
     auto window = (glm::vec2)sre::Renderer::instance->getWindowSize();
@@ -571,6 +563,7 @@ void CarGame::drawCarDebugMenu()
     }
 }
 
+/// @brief Pick a color based on frame time
 static glm::vec4 DeltaTimeToColor(float dt)
 {
     // From https://github.com/sawickiap/RegEngine/blob/613c31fd60558a75c5b8902529acfa425fc97b2a/Source/Game.cpp#L331
@@ -599,6 +592,7 @@ static glm::vec4 DeltaTimeToColor(float dt)
     return glm::vec4(colors[_countof(dts) - 1], 1.f);
 }
 
+/// @brief Debug window containing frame timing histogram
 void CarGame::drawFrameTimingDebug()
 {
     ImGui::SetNextWindowBgAlpha(0.5f);

@@ -18,6 +18,7 @@ Background::Background()
 
 void Background::renderBackground(sre::RenderPass &renderPass, float offsetX, float offsetY)
 {
+    // Move the tile grid, but only by integer size of sprite, giving no hint to player that batch is reused
     float x = offsetX - (std::fmod(offsetX, spriteSize.x));
     float y = offsetY - (std::fmod(offsetY, spriteSize.y));
     renderPass.draw(batch, glm::translate(vec3(x, y, 0)));
@@ -25,6 +26,7 @@ void Background::renderBackground(sre::RenderPass &renderPass, float offsetX, fl
 
 void Background::init(sre::Sprite sprite)
 {
+    // Setup sprite batch, creating a grid of background tiles which can be moved around the play space
     float scale = CarGame::windowSize.y / sprite.getSpriteSize().y;
     sprite.setScale({scale, scale});
     spriteSize = sprite.getSpriteSize();

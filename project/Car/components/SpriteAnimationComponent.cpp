@@ -21,9 +21,8 @@ void SpriteAnimationComponent::update(float deltaTime) {
         auto last = spriteIndex;
         spriteIndex = (spriteIndex + 1) % sprites.size();
         if (!repeating && (spriteIndex < last)) {
-            gameObject->remove();
+            gameObject->remove(); // Clean self up if not repeating animation
         }
-        //std::cout << !repeating << " " << (spriteIndex < last) << "\n";
         spriteComponent->setSprite(sprites[spriteIndex]);
     }
 }

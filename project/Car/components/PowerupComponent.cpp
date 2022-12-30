@@ -1,8 +1,3 @@
-//
-
-// Created by Morten Nobel-Jørgensen on 19/10/2017.
-//
-
 #include <SDL_events.h>
 #include <iostream>
 #include "PowerupComponent.hpp"
@@ -12,6 +7,8 @@
 #include "../CarGame.hpp"
 #include "SpriteComponent.hpp"
 #include "Car.hpp"
+
+// Power up simply stores a power up type
 
 PowerupComponent::PowerupComponent(GameObject *gameObject) : Component(gameObject)
 {

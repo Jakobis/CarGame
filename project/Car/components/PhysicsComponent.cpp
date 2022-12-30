@@ -1,5 +1,3 @@
-//
-
 #include <Box2D/Box2D.h>
 #include <iostream>
 #include "PhysicsComponent.hpp"
@@ -161,11 +159,11 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 positi
 
 b2Joint *PhysicsComponent::initJoint(std::shared_ptr<PhysicsComponent> other, b2JointDef *jointDef)
 {
-    assert(other->joint == nullptr);
+    assert(other->joint == nullptr); // Only add joint if not already present
     jointDef->bodyA = this->body;
     jointDef->bodyB = other->body;
     other->joint = world->CreateJoint(jointDef);
-    return other->joint; // We assign the joint to the "other"
+    return other->joint; // We assign the joint to the "other", easily creating one-to-many relation from "this"
 }
 
 bool PhysicsComponent::isSensor()

@@ -29,20 +29,12 @@ void ScrollingCamera::update(float deltaTime)
     position.x += offset.x;
     position.y += offset.y;
 
-    // Compromise for our sanity: Same zoom level for all screen sizes, bigger screen == bigger win
+    // Compromise for our sanity: Same zoom level for all screen sizes, bigger screen == bigger view
     if (cameraSize != sre::Renderer::instance->getWindowSize().y)
     {
         cameraSize = sre::Renderer::instance->getWindowSize().y;
         camera.setOrthographicProjection(cameraSize, -1, 1);
     }
-
-    // auto phys = followObject->getComponent<PhysicsComponent>();
-    // if (phys != nullptr)
-    // {
-    //     auto lv = phys->getLinearVelocity();
-    //     auto len = lv.x * lv.x + lv.y * lv.y;
-    //     camera.setOrthographicProjection(CarGame::windowSize.y * ((len * 0.00001) + 1), -1, 1);
-    // }
 
     gameObject->setPosition(position);
     vec3 eye(position, 0);
@@ -66,13 +58,13 @@ ImVec2 ScrollingCamera::getScreenPosition(glm::vec2 position)
 
 bool ScrollingCamera::isInView(glm::vec2 position)
 {
+    // Check position is to right and below of top left corner
     auto ps1 = camera.screenPointToRay({0, 0});
     if (position.x < ps1[0].x || position.y < ps1[0].y)
         return false;
+    // Check position is above and left of bottom right corner
     auto ps2 = camera.screenPointToRay((glm::vec2)sre::Renderer::instance->getWindowSize());
     if (position.x > ps2[0].x || position.y > ps2[0].y)
         return false;
-    // std::array<glm::vec2, 2> pos({glm::vec2(ps1[0].x, ps1[0].y), glm::vec2(ps2[0].x, ps2[0].y)});
-    // std::cout << pos[0].x << " " << pos[0].y << ", " << pos[1].x << " " << pos[1].y << "\n";
     return true;
 }

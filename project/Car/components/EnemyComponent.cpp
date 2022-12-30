@@ -16,17 +16,13 @@ EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)
     this->gameObject = gameObject;
 }
 
-void EnemyComponent::onCollisionStart(PhysicsComponent *comp)
-{
-    // std::cout << "Enemy collided with something" << std::endl;
-}
+void EnemyComponent::onCollisionStart(PhysicsComponent *comp) {}
 
-void EnemyComponent::onCollisionEnd(PhysicsComponent *comp)
-{
-}
+void EnemyComponent::onCollisionEnd(PhysicsComponent *comp) {}
 
 void EnemyComponent::update(float deltaTime)
 {
+    // Simple AI -- Always push enemy towards the player
     auto phys = gameObject->getComponent<PhysicsComponent>();
     auto desiredPosition = player->getPosition();
     phys->addForce(glm::normalize(desiredPosition - gameObject->getPosition()) * speed * deltaTime);

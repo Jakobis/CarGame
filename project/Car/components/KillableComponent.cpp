@@ -33,13 +33,9 @@ void KillableComponent::onCollisionStart(PhysicsComponent *comp)
     }
 }
 
-void KillableComponent::onCollisionEnd(PhysicsComponent *comp)
-{
-}
+void KillableComponent::onCollisionEnd(PhysicsComponent *comp) {}
 
-void KillableComponent::update(float deltaTime)
-{
-}
+void KillableComponent::update(float deltaTime) {}
 
 int KillableComponent::getPointValue()
 {

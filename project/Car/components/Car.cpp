@@ -30,22 +30,21 @@ void Tire::updateFriction()
 {
     auto angle = phys->getAngle();
 
+    // We get components rotated to align with the car
     glm::vec2 forwardTraction(-glm::sin(angle), glm::cos(angle));
     glm::vec2 lateralTraction(forwardTraction.y, -forwardTraction.x);
+    // We create traction as an opposite impulse...
     auto impulse = 100 * currentTraction * -phys->getLinearImpulse();
+    // ...and split it into sideways and straight traction, where forward traction is lower due to tires spinning
     auto forwardImpulse = glm::dot(forwardTraction, impulse) * forwardTraction * dragRatio;
     auto lateralImpulse = glm::dot(lateralTraction, impulse) * lateralTraction;
     phys->addForce(forwardImpulse + lateralImpulse);
-    // std::cout << angle << ";"
-    //           << impulse.x << ";" << impulse.y << ";"
-    //           << forwardImpulse.x << ";" << forwardImpulse.y << ";"
-    //           << lateralImpulse.x << ";" << lateralImpulse.y << "\n";
 }
 
 void Tire::updateDrive(char control)
 {
     float accel = 0.2;
-    // find desired speed
+    // find desired speed, simulating an enigne revving up/down/backwards
     float desiredSpeed = 0;
     switch (control & (C_UP | C_DOWN))
     {
@@ -68,7 +67,7 @@ void Tire::updateDrive(char control)
             currentEngineSpeed = 0;
         else
             currentEngineSpeed -= currentEngineSpeed * accel;
-        return; // do nothing beyond this
+        return; // do nothing beyond revving down if movement not desired
     }
 
     auto vel = phys->getLinearVelocity();
@@ -102,12 +101,12 @@ void Car::initTires(sre::Sprite *tireSprite)
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0;
     jointDef.upperAngle = 0;
-    jointDef.localAnchorB.SetZero(); // center of tire
+    jointDef.localAnchorB.SetZero(); // center of car
 
     // back left tire
     auto tireGameObject = CarGame::instance->createGameObject();
     auto tire = std::make_shared<Tire>(tireGameObject, tireSprite, false);
-    jointDef.localAnchorA.Set(-3, -4);
+    jointDef.localAnchorA.Set(-3, -4); // Center the tire to back left of car
     phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
@@ -122,6 +121,7 @@ void Car::initTires(sre::Sprite *tireSprite)
     tireGameObject = CarGame::instance->createGameObject();
     tire = std::make_shared<Tire>(tireGameObject, tireSprite, true);
     jointDef.localAnchorA.Set(-3, 3);
+    // We save the joint on the car, s.t. we can turn the front tires
     flJoint = (b2RevoluteJoint *)phys->initJoint(tireGameObject->getComponent<PhysicsComponent>(), &jointDef);
     tires.push_back(tire);
 
@@ -135,6 +135,7 @@ void Car::initTires(sre::Sprite *tireSprite)
 
 void Car::update(float deltaTime)
 {
+    // Update characteristics from debug view
     for (auto tire : tires)
     {
         if (tire->isFrontTire)
@@ -153,7 +154,7 @@ void Car::update(float deltaTime)
     }
     // control steering
     float lockAngle = glm::radians(35.0);
-    float turnSpeedPerSec = glm::radians(100.0); // from lock to lock in 0.5 sec
+    float turnSpeedPerSec = glm::radians(100.0);
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (control & (C_LEFT | C_RIGHT))
@@ -166,6 +167,7 @@ void Car::update(float deltaTime)
         break;
     default:; // nothing
     }
+    // We add partial rotation based on control and rotation speed
     float angleNow = flJoint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -211,10 +213,12 @@ float angleBetweenInDegrees(glm::vec2 a, glm::vec2 b)
 
 void Car::onCollisionStart(PhysicsComponent *comp)
 {
+    // Get collision speed and angle
     auto phys = gameObject->getComponent<PhysicsComponent>();
     auto vector2Enemy = comp->getGameObject()->getPosition() - gameObject->getPosition();
     auto collisionAngle = angleBetweenInDegrees(vector2Enemy, phys->getDirectionVector());
     auto collisionspeed = glm::length(comp->getLinearImpulse() - phys->getLinearImpulse()) / 1000; // the 1000 is to have more managable numbers
+    // Only deal damage to car if high enough speed and outside safe angle
     if (collisionspeed >= damageSpeedThreshold)
     {
         if (collisionAngle <= safeangle)
@@ -229,6 +233,7 @@ void Car::onCollisionStart(PhysicsComponent *comp)
             endGame();
         }
     }
+    // If collided with power up, apply power up effect
     auto pow = comp->getGameObject()->getComponent<PowerupComponent>();
     if (pow != nullptr)
     {
