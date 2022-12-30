@@ -256,7 +256,7 @@ void CarGame::spawnPowerup(PowerupType type, glm::vec2 position)
 
 void CarGame::handleSpawning(float time)
 {
-    float baseSpawnTime = 5;
+    float baseSpawnTime = 3;
     enemySpawnTimer -= time;
     if (enemySpawnTimer <= 0)
     {

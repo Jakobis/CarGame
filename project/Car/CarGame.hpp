@@ -88,7 +88,7 @@ private:
     bool doDebugDraw = false;
     GameState gameState = GameState::Running;
     friend class PhysicsComponent;
-    int winningScore = 20;
+    int winningScore = 100;
     int currentScore = 0;
     bool mute = false;
 };
