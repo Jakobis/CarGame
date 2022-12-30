@@ -14,6 +14,8 @@ file(GLOB Car
         "*.hpp"
         "*.h"
         "*.cpp"
+        "components/*.hpp"
+        "components/*.cpp"
         )
 
 # Compile cpp files (from Snake variable)

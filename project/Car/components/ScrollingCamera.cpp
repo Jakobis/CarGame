@@ -4,7 +4,7 @@
 
 #include "ScrollingCamera.hpp"
 #include "PhysicsComponent.hpp"
-#include "CarGame.hpp"
+#include "../CarGame.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 

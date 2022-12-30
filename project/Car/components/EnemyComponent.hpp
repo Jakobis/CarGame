@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "../Component.hpp"
 
 class EnemyComponent : public Component
 {

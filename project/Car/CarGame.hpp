@@ -3,11 +3,11 @@
 #include <vector>
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
-#include "ScrollingCamera.hpp"
+#include "components/ScrollingCamera.hpp"
 #include "Background.hpp"
 #include "Box2DDebugDraw.hpp"
 #include <random>
-#include "PowerupComponent.hpp"
+#include "components/PowerupComponent.hpp"
 #include <deque>
 #include "FrameTiming.hpp"
 

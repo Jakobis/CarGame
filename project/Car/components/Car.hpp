@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include "PhysicsComponent.hpp"
 
 enum Control
@@ -15,7 +15,7 @@ enum Control
 class Tire
 {
 public:
-    Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite, bool isFrontTire);
+    Tire(const std::shared_ptr<GameObject> &gameObject, sre::Sprite *sprite, bool isFrontTire);
     void setCharacteristics(float maxForwardSpeed, float maxBackwardSpeed, float maxDriveForce, float maxLateralImpulse, float currentTraction, float dragRatio);
     void updateFriction();
     void updateDrive(char control);
@@ -60,7 +60,7 @@ private:
     float frontTireMaxDriveForce = 50000;
     float backTireMaxLateralImpulse = 8.5;
     float frontTireMaxLateralImpulse = 7.5;
-    float currentTraction = 1;    // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
-    float dragRatio = 0.25;          // Between 0-1, describes how much of the traction translates to drag
+    float currentTraction = 1; // Between 0-1, 0 is slippery and 1 is perfect maneuverablity
+    float dragRatio = 0.25;    // Between 0-1, describes how much of the traction translates to drag
     friend class CarGame;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "../Component.hpp"
 
 class KillableComponent : public Component
 {
@@ -12,7 +12,7 @@ public:
     void onCollisionEnd(PhysicsComponent *comp) override;
 
     void update(float deltaTime) override;
-    
+
     int getPointValue();
 
 private:

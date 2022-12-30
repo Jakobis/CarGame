@@ -2,7 +2,7 @@
 
 #include "sre/Camera.hpp"
 #include "glm/glm.hpp"
-#include "Component.hpp"
+#include "../Component.hpp"
 
 class ScrollingCamera : public Component
 {

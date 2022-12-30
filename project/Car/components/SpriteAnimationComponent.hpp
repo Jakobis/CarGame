@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "../Component.hpp"
 #include "sre/Sprite.hpp"
 #include "SpriteComponent.hpp"
 

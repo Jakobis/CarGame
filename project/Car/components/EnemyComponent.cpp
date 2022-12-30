@@ -5,10 +5,10 @@
 #include <SDL_events.h>
 #include <iostream>
 #include "EnemyComponent.hpp"
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
-#include "CarGame.hpp"
+#include "../CarGame.hpp"
 #include "SpriteComponent.hpp"
 
 EnemyComponent::EnemyComponent(GameObject *gameObject) : Component(gameObject)

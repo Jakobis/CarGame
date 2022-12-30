@@ -6,13 +6,12 @@
 #include <SDL_events.h>
 #include <iostream>
 #include "PowerupComponent.hpp"
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
-#include "CarGame.hpp"
+#include "../CarGame.hpp"
 #include "SpriteComponent.hpp"
 #include "Car.hpp"
-#include "GameObject.hpp"
 
 PowerupComponent::PowerupComponent(GameObject *gameObject) : Component(gameObject)
 {
@@ -27,12 +26,12 @@ void PowerupComponent::onCollisionStart(PhysicsComponent *comp)
     }
 }
 
-
-PowerupType PowerupComponent::getType() {
+PowerupType PowerupComponent::getType()
+{
     return type;
 }
 
-void PowerupComponent::init(PowerupType type) 
+void PowerupComponent::init(PowerupType type)
 {
     this->type = type;
 }

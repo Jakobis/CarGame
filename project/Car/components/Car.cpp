@@ -1,11 +1,11 @@
 #include "Car.hpp"
-#include "CarGame.hpp"
+#include "../CarGame.hpp"
 #include "PhysicsComponent.hpp"
 #include "SpriteComponent.hpp"
 #include <iostream>
 #include "math.h"
 
-Tire::Tire(const std::shared_ptr<GameObject>& gameObject, sre::Sprite *sprite, bool isFrontTire)
+Tire::Tire(const std::shared_ptr<GameObject> &gameObject, sre::Sprite *sprite, bool isFrontTire)
 {
     auto s = gameObject->addComponent<SpriteComponent>();
     s->setSprite(*sprite);
@@ -137,10 +137,12 @@ void Car::update(float deltaTime)
 {
     for (auto tire : tires)
     {
-        if (tire->isFrontTire) {
+        if (tire->isFrontTire)
+        {
             tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse, currentTraction, dragRatio);
         }
-        else {
+        else
+        {
             tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse, currentTraction, dragRatio);
         }
         tire->updateFriction();
@@ -235,7 +237,7 @@ void Car::onCollisionStart(PhysicsComponent *comp)
         case PowerupType::Heal:
             health = maxHealth;
             break;
-        
+
         default:
             break;
         }

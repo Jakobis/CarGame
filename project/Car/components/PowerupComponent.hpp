@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "../Component.hpp"
 #include "sre/SpriteBatch.hpp"
 #include "sre/Texture.hpp"
 #include "sre/RenderPass.hpp"
@@ -18,6 +18,7 @@ public:
     void init(PowerupType type);
     PowerupType getType();
     void onCollisionStart(PhysicsComponent *comp) override;
+
 private:
     PowerupType type;
 };

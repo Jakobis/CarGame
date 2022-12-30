@@ -3,7 +3,7 @@
 //
 
 #include "SpriteAnimationComponent.hpp"
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include <memory>
 #include <iostream>
 

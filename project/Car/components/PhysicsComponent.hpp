@@ -5,7 +5,7 @@
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "Box2D/Dynamics/b2Body.h"
 #include "Box2D/Dynamics/Joints/b2RevoluteJoint.h"
-#include "Component.hpp"
+#include "../Component.hpp"
 
 class PhysicsComponent : public Component
 {

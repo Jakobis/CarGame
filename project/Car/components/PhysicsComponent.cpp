@@ -3,7 +3,7 @@
 #include <Box2D/Box2D.h>
 #include <iostream>
 #include "PhysicsComponent.hpp"
-#include "CarGame.hpp"
+#include "../CarGame.hpp"
 
 PhysicsComponent::PhysicsComponent(GameObject *gameObject)
     : Component(gameObject)
