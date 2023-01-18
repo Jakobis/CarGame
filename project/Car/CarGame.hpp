@@ -10,6 +10,7 @@
 #include "components/PowerupComponent.hpp"
 #include <deque>
 #include "FrameTiming.hpp"
+#include "SDL_mixer.h"
 
 class PhysicsComponent;
 
@@ -91,4 +92,5 @@ private:
     int winningScore = 100;
     int currentScore = 0;
     bool mute = false;
+    Mix_Chunk *my_sound;
 };

@@ -91,6 +91,7 @@ void CarGame::init()
     );
     Mix_Music *music = Mix_LoadMUS("./assets/music.mp3");
     Mix_PlayMusic(music, -1);
+    my_sound = Mix_LoadWAV("./assets/explosion.wav");
 
     spriteAtlas = SpriteAtlas::create("car.json", "car.png");
     // initialize explosion sprites
@@ -340,7 +341,6 @@ void CarGame::spawnExplosion(glm::vec2 position)
     sac->setRepeating(false);
     if (!mute)
     {
-        Mix_Chunk *my_sound = Mix_LoadWAV("./assets/explosion.wav");
         // Plays an SFX on the desired SFX channel
         Mix_PlayChannel(
             -1,       // int channel to play on (-1 is first available)
